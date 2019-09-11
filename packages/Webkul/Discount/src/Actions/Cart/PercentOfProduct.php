@@ -44,8 +44,7 @@ class PercentOfProduct extends Action
         };
 
         if ($apply()) {
-            if ($rule->action_type == 'whole_cart_to_percent')
-            {
+            if ($rule->action_type == 'whole_cart_to_percent') {
                 $eligibleItems = \Cart::getCart()->items;
             }
 
@@ -61,7 +60,24 @@ class PercentOfProduct extends Action
                 $report = array();
 
                 $report['item_id'] = $item->id;
-                $report['product_id'] = $item->child ? $item->child->product_id : $item->product_id;
+
+                if ($item->product->getTypeInstance()->isComposite()) {
+                    $isQtyZero = true;
+
+                    foreach ($item->children as $children) {
+                        if ($children->quantity > 0) {
+                            $isQtyZero = false;
+                        }
+                    }
+
+                    if ($isQtyZero)
+                        $report['product_id'] = $item->children->first()->product_id;
+                    else {
+                        $report['product_id'] = $item->product_id;
+                    }
+                } else {
+                    $report['product_id'] = $item->product_id;
+                }
 
                 if ($rule->disc_amount > 100) {
                     $discount_amount = 100;

@@ -79,7 +79,7 @@ class OnepageController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\View\View 
+     * @return \Illuminate\View\View
     */
     public function index()
     {
@@ -91,7 +91,8 @@ class OnepageController extends Controller
         if (! auth()->guard('customer')->check() && $cart->haveDownloadableItems())
             return redirect()->route('customer.session.index');
 
-        //$this->nonCoupon->apply();
+        $this->nonCoupon->apply();
+        dd('w');
 
         Cart::collectTotals();
 
@@ -101,7 +102,7 @@ class OnepageController extends Controller
     /**
      * Return order short summary
      *
-     * @return \Illuminate\View\View 
+     * @return \Illuminate\View\View
     */
     public function summary()
     {

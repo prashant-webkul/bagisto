@@ -54,7 +54,24 @@ class FixedAmount extends Action
                 $report = array();
 
                 $report['item_id'] = $item->id;
-                $report['product_id'] = $item->child ? $item->child->product_id : $item->product_id;
+
+                if ($item->product->getTypeInstance()->isComposite()) {
+                    $isQtyZero = true;
+
+                    foreach ($item->children as $children) {
+                        if ($children->quantity > 0) {
+                            $isQtyZero = false;
+                        }
+                    }
+
+                    if ($isQtyZero)
+                        $report['product_id'] = $item->children->first()->product_id;
+                    else {
+                        $report['product_id'] = $item->product_id;
+                    }
+                } else {
+                    $report['product_id'] = $item->product_id;
+                }
 
                 $discount = round($rule->disc_amount, 4) * $discQuantity;
 
