@@ -9,8 +9,8 @@ use Webkul\Core\Repositories\SliderRepository as Slider;
 /**
  * Slider controller for managing the slider controls.
  *
- * @author    Prashant Singh <prashant.singh852@webkul.com> @prashant-webkul
- * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
+ * @author  Prashant Singh <prashant.singh852@webkul.com> @prashant-webkul
+ * @copyright  2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class SliderController extends Controller
 {
@@ -135,7 +135,7 @@ class SliderController extends Controller
     {
         $slider = $this->slider->findOrFail($id);
 
-        if ($this->slider->findWhere(['channel_id' => core()->getCurrentChannel()->id])->count() == 1) {
+        if ($this->slider->findWhere(['channel_id' => core()->getCurrentChannel()->id])->count() == 1 && ($slider->channel_id == core()->getCurrentChannel()->id)) {
             session()->flash('warning', trans('admin::app.settings.sliders.delete-success'));
         } else {
             try {

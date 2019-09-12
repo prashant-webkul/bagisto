@@ -64,7 +64,7 @@ class InvoiceRepository extends Repository
 
         parent::__construct($app);
     }
-    
+
     /**
      * Specify Model class name
      *
@@ -83,7 +83,7 @@ class InvoiceRepository extends Repository
     public function create(array $data)
     {
         DB::beginTransaction();
-        
+
         try {
             Event::fire('sales.invoice.save.before', $data);
 
@@ -99,6 +99,8 @@ class InvoiceRepository extends Repository
                     'channel_currency_code' => $order->channel_currency_code,
                     'order_currency_code' => $order->order_currency_code,
                     'order_address_id' => $order->billing_address->id,
+                    "discount_amount" => $order->discount_amount,
+                    "base_discount_amount" => $order->base_discount_amount,
                 ]);
 
             foreach ($data['invoice']['items'] as $itemId => $qty) {
@@ -121,11 +123,13 @@ class InvoiceRepository extends Repository
                         'base_total' => $orderItem->base_price * $qty,
                         'tax_amount' => ( ($orderItem->tax_amount / $orderItem->qty_ordered) * $qty ),
                         'base_tax_amount' => ( ($orderItem->base_tax_amount / $orderItem->qty_ordered) * $qty ),
+                        'discount_amount' => ( ($orderItem->discount_amount / $orderItem->qty_ordered) * $qty ),
+                        'base_discount_amount' => ( ($orderItem->base_discount_amount / $orderItem->qty_ordered) * $qty ),
                         'product_id' => $orderItem->product_id,
                         'product_type' => $orderItem->product_type,
                         'additional' => $orderItem->additional,
                     ]);
-                
+
                 if ($orderItem->type == 'configurable' && $orderItem->child) {
                     $childOrderItem = $orderItem->child;
 
@@ -142,6 +146,8 @@ class InvoiceRepository extends Repository
                             'base_total' => $childOrderItem->base_price * $qty,
                             'tax_amount' => 0,
                             'base_tax_amount' => 0,
+                            'discount_amount' => 0,
+                            'base_discount_amount' => 0,
                             'product_id' => $childOrderItem->product_id,
                             'product_type' => $childOrderItem->product_type,
                             'additional' => $childOrderItem->additional,
@@ -163,7 +169,7 @@ class InvoiceRepository extends Repository
 
             throw $e;
         }
-        
+
         DB::commit();
 
         return $invoice;
@@ -177,6 +183,7 @@ class InvoiceRepository extends Repository
     {
         $subTotal = $baseSubTotal = 0;
         $taxAmount = $baseTaxAmount = 0;
+        $discountAmount = $baseDiscountAmount = 0;
 
         foreach ($invoice->items as $invoiceItem) {
             $subTotal += $invoiceItem->total;
@@ -184,6 +191,9 @@ class InvoiceRepository extends Repository
 
             $taxAmount += $invoiceItem->tax_amount;
             $baseTaxAmount += $invoiceItem->base_tax_amount;
+
+            $discountAmount += $invoiceItem->discount_amount;
+            $baseDiscountAmount += $invoiceItem->base_discount_amount;
         }
 
         $shippingAmount = $invoice->order->shipping_amount;
@@ -207,8 +217,8 @@ class InvoiceRepository extends Repository
         $invoice->tax_amount = $taxAmount;
         $invoice->base_tax_amount = $baseTaxAmount;
 
-        $invoice->grand_total = $subTotal + $taxAmount + $shippingAmount;
-        $invoice->base_grand_total = $baseSubTotal + $baseTaxAmount + $baseShippingAmount;
+        $invoice->grand_total = $subTotal + $taxAmount + $shippingAmount - $discountAmount;
+        $invoice->base_grand_total = $baseSubTotal + $baseTaxAmount + $baseShippingAmount - $baseDiscountAmount;
 
         $invoice->save();
 

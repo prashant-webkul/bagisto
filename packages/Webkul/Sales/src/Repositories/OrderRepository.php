@@ -173,7 +173,7 @@ class OrderRepository extends Repository
             $totalQtyCanceled += $item->qty_canceled;
         }
 
-        if ($totalQtyOrdered != ($totalQtyRefunded + $totalQtyCanceled) && 
+        if ($totalQtyOrdered != ($totalQtyRefunded + $totalQtyCanceled) &&
             $totalQtyOrdered == $totalQtyInvoiced + $totalQtyRefunded + $totalQtyCanceled &&
             $totalQtyOrdered == $totalQtyShipped + $totalQtyRefunded + $totalQtyCanceled)
             return true;
@@ -262,10 +262,13 @@ class OrderRepository extends Repository
 
             $order->tax_amount_invoiced += $invoice->tax_amount;
             $order->base_tax_amount_invoiced += $invoice->base_tax_amount;
+
+            $order->discount_invoiced += $invoice->discount_amount;
+            $order->base_discount_invoiced += $invoice->base_discount_amount;
         }
 
-        $order->grand_total_invoiced = $order->sub_total_invoiced + $order->shipping_invoiced + $order->tax_amount_invoiced;
-        $order->base_grand_total_invoiced = $order->base_sub_total_invoiced + $order->base_shipping_invoiced + $order->base_tax_amount_invoiced;
+        $order->grand_total_invoiced = $order->sub_total_invoiced + $order->shipping_invoiced + $order->tax_amount_invoiced - $order->discount_invoiced;
+        $order->base_grand_total_invoiced = $order->base_sub_total_invoiced + $order->base_shipping_invoiced + $order->base_tax_amount_invoiced - $order->base_discount_invoiced;
 
         $order->save();
 

@@ -39,12 +39,12 @@
                 @endforeach
 
                 @if ($enableActions)
-                    <td class="actions" style="width: 100px;" data-value=" {{ __('ui::app.datagrid.actions') }}">
+                    <td class="actions" style="width: 100px;" data-value="{{ __('ui::app.datagrid.actions') }}">
                         <div class="action">
                             @foreach ($actions as $action)
                                 <a
                                 @if ($action['method'] == 'GET')
-                                    href="{{ route($action['route'], $record->{$index}) }}"
+                                    href="{{ route($action['route'], $record->{$action['index'] ?? $index}) }}"
                                 @endif
 
                                 @if ($action['method'] != 'GET')
@@ -53,7 +53,11 @@
 
                                 data-method="{{ $action['method'] }}"
                                 data-action="{{ route($action['route'], $record->{$index}) }}"
-                                data-token="{{ csrf_token() }}">
+                                data-token="{{ csrf_token() }}"
+
+                                @if (isset($action['title']))
+                                    title="{{ $action['title'] }}"
+                                @endif>
                                     <span class="{{ $action['icon'] }}"></span>
                                 </a>
                             @endforeach

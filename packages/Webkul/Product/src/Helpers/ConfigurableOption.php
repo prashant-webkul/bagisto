@@ -135,6 +135,9 @@ class ConfigurableOption extends AbstractProduct
 
                 $attributeValue = $product->{$productAttribute->code};
 
+                if ($attributeValue == '' && $product instanceof \Webkul\Product\Models\ProductFlat)
+                    $attributeValue = $product->product->{$productAttribute->code};
+
                 $options[$productAttributeId][$attributeValue][] = $productId;
 
                 $options['index'][$productId][$productAttributeId] = $attributeValue;
@@ -169,7 +172,7 @@ class ConfigurableOption extends AbstractProduct
                 $attributes[] = [
                     'id' => $attributeId,
                     'code' => $attribute->code,
-                    'label' => $attribute->name,
+                    'label' => $attribute->name ? $attribute->name : $attribute->admin_name,
                     'swatch_type' => $attribute->swatch_type,
                     'options' => $attributeOptionsData
                 ];
@@ -221,7 +224,7 @@ class ConfigurableOption extends AbstractProduct
             } else {
                 $variantId = $variant->id;
             }
-            
+
             $prices[$variantId] = [
                 'regular_price' => [
                     'formated_price' => core()->currency($variant->price),

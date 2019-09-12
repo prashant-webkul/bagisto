@@ -21,7 +21,7 @@
 
     {!! view_render_event('bagisto.shop.customers.forget_password.before') !!}
 
-    <form method="post" action="{{ route('customer.forgot-password.store') }}">
+    <form method="post" action="{{ route('customer.forgot-password.store') }}" @submit.prevent="onSubmit">
 
         {{ csrf_field() }}
 
@@ -40,19 +40,21 @@
             {!! view_render_event('bagisto.shop.customers.forget_password_form_controls.before') !!}
 
             <div class="button-group">
-                <input class="btn btn-primary btn-lg" type="submit" value="{{ __('shop::app.customer.forgot-password.submit') }}">
+                <button type="submit" class="btn btn-lg btn-primary">
+                    {{ __('shop::app.customer.forgot-password.submit') }}
+                </button>
             </div>
 
             <div class="control-group" style="margin-bottom: 0px;">
                 <a href="{{ route('customer.session.index') }}">
                     <i class="icon primary-back-icon"></i>
-                    Back to Sign In
+                    {{ __('shop::app.customer.reset-password.back-link-title') }}
                 </a>
             </div>
 
         </div>
     </form>
-    
+
     {!! view_render_event('bagisto.shop.customers.forget_password.before') !!}
 
 </div>

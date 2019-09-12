@@ -1,5 +1,37 @@
 @inject ('attributeRepository', 'Webkul\Attribute\Repositories\AttributeRepository')
 
+@inject ('productFlatRepository', 'Webkul\Product\Repositories\ProductFlatRepository')
+
+@inject ('productRepository', 'Webkul\Product\Repositories\ProductRepository')
+
+<?php
+    $filterAttributes = [];
+
+    if (isset($category)) {
+        $products = $productRepository->getAll($category->id);
+
+        if (count($category->filterableAttributes) > 0 && count($products)) {
+            $filterAttributes = $category->filterableAttributes;
+        } else {
+            $categoryProductAttributes = $productFlatRepository->getCategoryProductAttribute($category->id);
+
+            if ($categoryProductAttributes) {
+                foreach ($attributeRepository->getFilterAttributes() as $filterAttribute) {
+                    if (in_array($filterAttribute->id, $categoryProductAttributes)) {
+                        $filterAttributes[] = $filterAttribute;
+                    } else  if ($filterAttribute ['code'] == 'price') {
+                        $filterAttributes[] = $filterAttribute;
+                    }
+                }
+
+                $filterAttributes = collect($filterAttributes);
+            }
+        }
+    } else {
+        $filterAttributes = $attributeRepository->getFilterAttributes();
+    }
+?>
+
 <div class="layered-filter-wrapper">
 
     {!! view_render_event('bagisto.shop.products.list.layered-nagigation.before') !!}
@@ -81,25 +113,31 @@
 
             template: '#layered-navigation-template',
 
-            data() {
+            data: function() {
                 return {
-                    attributes: @json($attributeRepository->getFilterAttributes()),
+                    attributes: @json($filterAttributes),
                     appliedFilters: {}
                 }
             },
 
-            created () {
+            created: function () {
                 var urlParams = new URLSearchParams(window.location.search);
 
-                var entries = urlParams.entries();
+                //var entries = urlParams.entries();
 
-                for(pair of entries) {
-                   this.appliedFilters[pair[0]] = pair[1].split(',');
-                }
+                //for (let pair of entries) {
+                    //this.appliedFilters[pair[0]] = pair[1].split(',');
+                //}
+
+                var this_this = this;
+
+                urlParams.forEach(function (value, index) {
+                    this_this.appliedFilters[index] = value.split(',');
+                });
             },
 
             methods: {
-                addFilters (attributeCode, filters) {
+                addFilters: function (attributeCode, filters) {
                     if (filters.length) {
                         this.appliedFilters[attributeCode] = filters;
                     } else {
@@ -109,7 +147,7 @@
                     this.applyFilter()
                 },
 
-                applyFilter () {
+                applyFilter: function () {
                     var params = [];
 
                     for(key in this.appliedFilters) {
@@ -119,7 +157,6 @@
                     window.location.href = "?" + params.join('&');
                 }
             }
-
         });
 
         Vue.component('filter-attribute-item', {
@@ -128,30 +165,32 @@
 
             props: ['index', 'attribute', 'appliedFilterValues'],
 
-            data: () => ({
-                appliedFilters: [],
+            data: function() {
+                return {
+                    appliedFilters: [],
 
-                active: false,
+                    active: false,
 
-                sliderConfig: {
-                    value: [
-                        0,
-                        0
-                    ],
-                    max: 500,
-                    processStyle: {
-                        "backgroundColor": "#FF6472"
-                    },
-                    tooltipStyle: {
-                        "backgroundColor": "#FF6472",
-                        "borderColor": "#FF6472"
+                    sliderConfig: {
+                        value: [
+                            0,
+                            0
+                        ],
+                        max: {{ isset($category) ? core()->convertPrice($productFlatRepository->getCategoryProductMaximumPrice($category->id)) : core()->convertPrice($productFlatRepository->getProductMaximumPrice()) }},
+                        processStyle: {
+                            "backgroundColor": "#FF6472"
+                        },
+                        tooltipStyle: {
+                            "backgroundColor": "#FF6472",
+                            "borderColor": "#FF6472"
+                        }
                     }
                 }
-            }),
+            },
 
-            created () {
+            created: function () {
                 if (!this.index)
-                    this.active = true;
+                    this.active = false;
 
                 if (this.appliedFilterValues && this.appliedFilterValues.length) {
                     this.appliedFilters = this.appliedFilterValues;
@@ -165,17 +204,17 @@
             },
 
             methods: {
-                addFilter (e) {
+                addFilter: function (e) {
                     this.$emit('onFilterAdded', this.appliedFilters)
                 },
 
-                priceRangeUpdated (value) {
+                priceRangeUpdated: function (value) {
                     this.appliedFilters = value;
 
                     this.$emit('onFilterAdded', this.appliedFilters)
                 },
 
-                clearFilters () {
+                clearFilters: function () {
                     if (this.attribute.type == 'price') {
                         this.sliderConfig.value = [0, 0];
                     }

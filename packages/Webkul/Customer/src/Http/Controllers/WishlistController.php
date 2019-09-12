@@ -79,7 +79,7 @@ class WishlistController extends Controller
         //accidental case if some one adds id of the product in the anchor tag amd gives id of a variant.
         if ($product->parent_id != null) {
             $product = $this->product->findOneByField('id', $product->parent_id);
-            $data['product_id'] = $product->parent_id;
+            $data['product_id'] = $product->id;
         }
 
         if ($checked->isEmpty()) {
@@ -134,10 +134,16 @@ class WishlistController extends Controller
         if(!isset($wishlistItem) || $wishlistItem->customer_id != auth()->guard('customer')->user()->id) {
             session()->flash('warning', trans('shop::app.security-warning'));
 
-            return redirect()->route( 'customer.wishlist.index');
+            return redirect()->route('customer.wishlist.index');
         }
 
-        $result = Cart::moveToCart($wishlistItem);
+        try {
+            $result = Cart::moveToCart($wishlistItem);
+        } catch (\Exception $e) {
+            session()->flash('warning', $e->getMessage());
+
+            return redirect()->back();
+        }
 
         if ($result == 1) {
             if ($wishlistItem->delete()) {

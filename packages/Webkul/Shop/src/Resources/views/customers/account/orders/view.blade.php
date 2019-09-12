@@ -68,7 +68,14 @@
                                                     <td data-value="{{ __('shop::app.customer.account.order.view.SKU') }}">
                                                         {{ $item->type == 'configurable' ? $item->child->sku : $item->sku }}
                                                     </td>
-                                                    <td data-value="{{ __('shop::app.customer.account.order.view.product-name') }}">{{ $item->name }}</td>
+                                                    <td data-value="{{ __('shop::app.customer.account.order.view.product-name') }}">
+                                                        {{ $item->name }} <br>
+                                                        @if (isset($item['additional']['attributes']))
+                                                            @foreach($item['additional']['attributes'] as  $attribute)
+                                                                <b>{{ $attribute['attribute_name']}}</b> : {{ $attribute['option_label']}} <br>
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
                                                     <td data-value="{{ __('shop::app.customer.account.order.view.price') }}">{{ core()->formatPrice($item->price, $order->order_currency_code) }}</td>
                                                     <td data-value="{{ __('shop::app.customer.account.order.view.item-status') }}">
                                                         <span class="qty-row">
@@ -112,6 +119,14 @@
                                                 <td>-</td>
                                                 <td>{{ core()->formatPrice($order->shipping_amount, $order->order_currency_code) }}</td>
                                             </tr>
+
+                                            @if ($order->base_discount_amount > 0)
+                                                <tr>
+                                                    <td>{{ __('shop::app.customer.account.order.view.discount') }}</td>
+                                                    <td>-</td>
+                                                    <td>{{ core()->formatPrice($order->discount_amount, $order->order_currency_code) }}</td>
+                                                </tr>
+                                            @endif
 
                                             <tr class="border">
                                                 <td>{{ __('shop::app.customer.account.order.view.tax') }}</td>
@@ -208,6 +223,14 @@
                                                     <td>-</td>
                                                     <td>{{ core()->formatPrice($invoice->shipping_amount, $order->order_currency_code) }}</td>
                                                 </tr>
+
+                                                @if ($order->base_discount_amount > 0)
+                                                    <tr>
+                                                        <td>{{ __('shop::app.customer.account.order.view.discount') }}</td>
+                                                        <td>-</td>
+                                                        <td>{{ core()->formatPrice($order->discount_amount, $order->order_currency_code) }}</td>
+                                                    </tr>
+                                                @endif
 
                                                 <tr>
                                                     <td>{{ __('shop::app.customer.account.order.view.tax') }}</td>

@@ -74,9 +74,16 @@ class ProductForm extends FormRequest
             'variants.*.sku' => 'required',
             'variants.*.price' => 'required',
             'variants.*.weight' => 'required',
+            'images.*' => 'mimes:jpeg,jpg,bmp,png'
         ];
 
         $inputs = $this->all();
+
+        if (isset($inputs['variants'])) {
+            foreach ($inputs['variants'] as $key => $variant) {
+                $this->rules['variants'.'.'.$key.'.'.'sku'] = ['unique:products,sku,' . $key, new \Webkul\Core\Contracts\Validations\Slug];
+            }
+        }
 
         $product = $this->product->find($this->id);
 
@@ -103,11 +110,15 @@ class ProductForm extends FormRequest
                 }
 
                 if ($attribute->type == 'text' && $attribute->validation) {
-                    array_push($validations, $attribute->validation);
+                    if ($attribute->validation == 'decimal') {
+                        array_push($validations, new \Webkul\Core\Contracts\Validations\Decimal);
+                    } else {
+                        array_push($validations, $attribute->validation);
+                    }
                 }
 
                 if ($attribute->type == 'price') {
-                    array_push($validations, 'decimal');
+                    array_push($validations, new \Webkul\Core\Contracts\Validations\Decimal);
                 }
 
                 if ($attribute->is_unique) {
@@ -125,5 +136,17 @@ class ProductForm extends FormRequest
         }
 
         return $this->rules;
+    }
+
+    /**
+     * Custom message for validation
+     *
+     * @return array
+    */
+    public function messages()
+    {
+        return [
+            'variants.*.sku.unique' => 'The sku has already been taken.',
+        ];
     }
 }

@@ -74,7 +74,7 @@
                 color: #000;
                 font-weight: 600;
             }
-            
+
         </style>
     </head>
 
@@ -114,16 +114,16 @@
                                     <p>{{ $invoice->order->billing_address->address1 }}</p>
                                     <p>{{ $invoice->order->billing_address->city }}</p>
                                     <p>{{ $invoice->order->billing_address->state }}</p>
-                                    <p>{{ country()->name($invoice->order->billing_address->country) }} {{ $invoice->order->billing_address->postcode }}</p>
-                                    {{ __('shop::app.checkout.onepage.contact') }} : {{ $invoice->order->billing_address->phone }} 
+                                    <p>{{ core()->country_name($invoice->order->billing_address->country) }} {{ $invoice->order->billing_address->postcode }}</p>
+                                    {{ __('shop::app.checkout.onepage.contact') }} : {{ $invoice->order->billing_address->phone }}
                                 </td>
                                 <td>
                                     <p>{{ $invoice->order->shipping_address->name }}</p>
                                     <p>{{ $invoice->order->shipping_address->address1 }}</p>
                                     <p>{{ $invoice->order->shipping_address->city }}</p>
                                     <p>{{ $invoice->order->shipping_address->state }}</p>
-                                    <p>{{ country()->name($invoice->order->shipping_address->country) }} {{ $invoice->order->shipping_address->postcode }}</p>
-                                    {{ __('shop::app.checkout.onepage.contact') }} : {{ $invoice->order->shipping_address->phone }} 
+                                    <p>{{ core()->country_name($invoice->order->shipping_address->country) }} {{ $invoice->order->shipping_address->postcode }}</p>
+                                    {{ __('shop::app.checkout.onepage.contact') }} : {{ $invoice->order->shipping_address->phone }}
                                 </td>
                             </tr>
                         </tbody>
@@ -151,7 +151,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="table items">
                     <table>
                         <thead>
@@ -210,6 +210,12 @@
                         <td>{{ core()->formatBasePrice($invoice->base_tax_amount) }}</td>
                     </tr>
 
+                    <tr>
+                        <td>{{ __('admin::app.sales.orders.discount') }}</td>
+                        <td>-</td>
+                        <td>{{ core()->formatBasePrice($invoice->base_discount_amount) }}</td>
+                    </tr>
+
                     <tr class="bold">
                         <td>{{ __('admin::app.sales.orders.grand-total') }}</td>
                         <td>-</td>
@@ -222,4 +228,3 @@
         </div>
     </body>
 </html>
-    

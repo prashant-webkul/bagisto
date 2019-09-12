@@ -16,7 +16,7 @@ use Cart;
  * Cart controller for the customer and guest users for adding and
  * removing the products in the cart.
  *
- * @author    Prashant Singh <prashant.singh852@webkul.com> @prashant-webkul
+ * @author  Prashant Singh <prashant.singh852@webkul.com> @prashant-webkul
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class CartController extends Controller
@@ -157,41 +157,45 @@ class CartController extends Controller
      */
     public function updateBeforeCheckout()
     {
-        $request = request()->except('_token');
+        try {
+            $request = request()->except('_token');
 
-        foreach ($request['qty'] as $id => $quantity) {
-            if ($quantity <= 0) {
-                session()->flash('warning', trans('shop::app.checkout.cart.quantity.illegal'));
+            foreach ($request['qty'] as $id => $quantity) {
+                if ($quantity <= 0) {
+                    session()->flash('warning', trans('shop::app.checkout.cart.quantity.illegal'));
 
-                return redirect()->back();
-            }
-        }
-
-        foreach ($request['qty'] as $key => $value) {
-            $item = $this->cartItem->findOneByField('id', $key);
-
-            $data['quantity'] = $value;
-
-            Event::fire('checkout.cart.update.before', $key);
-
-            $result = Cart::updateItem($item->product_id, $data, $key);
-
-            if ($result == false) {
-                $this->suppressFlash = true;
+                    return redirect()->back();
+                }
             }
 
-            Event::fire('checkout.cart.update.after', $item);
+            foreach ($request['qty'] as $key => $value) {
+                $item = $this->cartItem->findOneByField('id', $key);
 
-            unset($item);
-            unset($data);
-        }
+                $data['quantity'] = $value;
 
-        Cart::collectTotals();
+                Event::fire('checkout.cart.update.before', $item);
 
-        if ($this->suppressFlash) {
-            session()->forget('success');
-            session()->forget('warning');
-            session()->flash('info', trans('shop::app.checkout.cart.partial-cart-update'));
+                $result = Cart::updateItem($item->product_id, $data, $key);
+
+                if ($result == false) {
+                    $this->suppressFlash = true;
+                }
+
+                Event::fire('checkout.cart.update.after', $item);
+
+                unset($item);
+                unset($data);
+            }
+
+            Cart::collectTotals();
+
+            if ($this->suppressFlash) {
+                session()->forget('success');
+                session()->forget('warning');
+                session()->flash('info', trans('shop::app.checkout.cart.partial-cart-update'));
+            }
+        } catch(\Exception $e) {
+            session()->flash('error', trans($e->getMessage()));
         }
 
         return redirect()->back();
@@ -209,20 +213,26 @@ class CartController extends Controller
         return redirect()->route('shop.products.index', $slug);
     }
 
-    public function buyNow($id)
+    public function buyNow($id, $quantity = 1)
     {
-        Event::fire('checkout.cart.add.before', $id);
+        try {
+            Event::fire('checkout.cart.add.before', $id);
 
-        $result = Cart::proceedToBuyNow($id);
+            $result = Cart::proceedToBuyNow($id, $quantity);
 
-        Event::fire('checkout.cart.add.after', $result);
+            Event::fire('checkout.cart.add.after', $result);
 
-        Cart::collectTotals();
+            Cart::collectTotals();
 
-        if (! $result) {
+            if (! $result) {
+                return redirect()->back();
+            } else {
+                return redirect()->route('shop.checkout.onepage.index');
+            }
+        } catch(\Exception $e) {
+            session()->flash('error', trans($e->getMessage()));
+
             return redirect()->back();
-        } else {
-            return redirect()->route('shop.checkout.onepage.index');
         }
     }
 

@@ -24,81 +24,84 @@ use Webkul\Product\Helpers\Price;
 class Cart {
 
     /**
-     * CartRepository model
+     * CartRepository instance
      *
      * @var mixed
      */
     protected $cart;
 
     /**
-     * CartItemRepository model
+     * CartItemRepository instance
      *
      * @var mixed
      */
     protected $cartItem;
 
     /**
-     * CustomerRepository model
+     * CustomerRepository instance
      *
      * @var mixed
      */
     protected $customer;
 
     /**
-     * CartAddressRepository model
+     * CartAddressRepository instance
      *
      * @var mixed
      */
     protected $cartAddress;
 
     /**
-     * ProductRepository model
+     * ProductRepository instance
      *
      * @var mixed
      */
     protected $product;
 
     /**
-     * TaxCategoryRepository model
+     * TaxCategoryRepository instance
      *
      * @var mixed
      */
     protected $taxCategory;
 
     /**
-     * WishlistRepository model
+     * WishlistRepository instance
      *
      * @var mixed
      */
     protected $wishlist;
 
     /**
-     * CustomerAddressRepository model
+     * CustomerAddressRepository instance
      *
      * @var mixed
      */
-     protected $customerAddress;
+    protected $customerAddress;
 
     /**
      * Suppress the session flash messages
-     */
+    */
     protected $suppressFlash;
 
     /**
      * Product price helper instance
-     */
+    */
     protected $price;
 
     /**
      * Create a new controller instance.
      *
-     * @param  Webkul\Checkout\Repositories\CartRepository            $cart
-     * @param  Webkul\Checkout\Repositories\CartItemRepository        $cartItem
-     * @param  Webkul\Checkout\Repositories\CartAddressRepository     $cartAddress
-     * @param  Webkul\Customer\Repositories\CustomerRepository        $customer
-     * @param  Webkul\Product\Repositories\ProductRepository          $product
-     * @param  Webkul\Product\Repositories\TaxCategoryRepository      $taxCategory
+     * @param  Webkul\Checkout\Repositories\CartRepository  $cart
+     * @param  Webkul\Checkout\Repositories\CartItemRepository  $cartItem
+     * @param  Webkul\Checkout\Repositories\CartAddressRepository  $cartAddress
+     * @param  Webkul\Customer\Repositories\CustomerRepository  $customer
+     * @param  Webkul\Product\Repositories\ProductRepository  $product
+     * @param  Webkul\Product\Repositories\TaxCategoryRepository  $taxCategory
      * @param  Webkul\Product\Repositories\CustomerAddressRepository  $customerAddress
+     * @param  Webkul\Product\Repositories\CustomerAddressRepository  $customerAddress
+     * @param  Webkul\Discount\Repositories\CartRuleRepository  $cartRule
+     * @param  Webkul\Helpers\Discount  $discount
      * @return void
      */
     public function __construct(
@@ -133,7 +136,6 @@ class Cart {
 
         $this->suppressFlash = false;
     }
-
 
     /**
      * Return current logged in customer
@@ -311,6 +313,10 @@ class Cart {
 
         $weight = ($product->type == 'configurable' ? $childProduct->weight : $product->weight);
 
+        if (gettype($weight)) {
+            $weight = floatval($weight);
+        }
+
         $parentData = [
             'sku' => $product->sku,
             'quantity' => $data['quantity'],
@@ -346,7 +352,7 @@ class Cart {
 
         if ($childData != null) {
             $childData['parent_id'] = $item->id;
-            
+
             $this->cartItem->create($childData);
         }
 
@@ -633,12 +639,12 @@ class Cart {
             $option = $attribute->options()->where('id', $product->{$attribute->code})->first();
 
             $data['attributes'][$attribute->code] = [
-                'attribute_name' => $attribute->name,
+                'attribute_name' => $attribute->name ?  $attribute->name : $attribute->admin_name,
                 'option_id' => $option->id,
                 'option_label' => $option->label,
             ];
 
-            $labels[] = $attribute->name . ' : ' . $option->label;
+            $labels[] = ($attribute->name ? $attribute->name : $attribute->admin_name) . ' : ' . $option->label;
         }
 
         $data['html'] = implode(', ', $labels);
@@ -798,10 +804,14 @@ class Cart {
         $cart->grand_total = $cart->base_grand_total = 0;
         $cart->sub_total = $cart->base_sub_total = 0;
         $cart->tax_total = $cart->base_tax_total = 0;
+        $cart->discount_amount = $cart->base_discount_amount = 0;
 
         foreach ($cart->items()->get() as $item) {
-            $cart->grand_total = (float) $cart->grand_total + $item->total + $item->tax_amount;
-            $cart->base_grand_total = (float) $cart->base_grand_total + $item->base_total + $item->base_tax_amount;
+            $cart->discount_amount += $item->discount_amount;
+            $cart->base_discount_amount += $item->base_discount_amount;
+
+            $cart->grand_total = (float) $cart->grand_total + $item->total + $item->tax_amount - $item->discount_amount;
+            $cart->base_grand_total = (float) $cart->base_grand_total + $item->base_total + $item->base_tax_amount - $item->base_discount_amount;
 
             $cart->sub_total = (float) $cart->sub_total + $item->total;
             $cart->base_sub_total = (float) $cart->base_sub_total + $item->base_total;
@@ -862,14 +872,14 @@ class Cart {
                     } else if ($this->price->getMinimalPrice($item->child->product_flat) != $item->price) {
                         // $price = (float) $item->custom_price ? $item->custom_price : $item->child->product->price;
 
-                        if ((float)$item->custom_price) {
+                        if (! is_null($item->custom_price)) {
                             $price = $item->custom_price;
                         } else {
                             $price = $this->price->getMinimalPrice($item->child->product_flat);
                         }
 
                         $item->update([
-                            'price' => $price,
+                            'price' => core()->convertPrice($price),
                             'base_price' => $price,
                             'total' => core()->convertPrice($price * ($item->quantity)),
                             'base_total' => $price * ($item->quantity),
@@ -886,14 +896,14 @@ class Cart {
                     } else if ($this->price->getMinimalPrice($productFlat) != $item->price) {
                         // $price = (float) $item->custom_price ? $item->custom_price : $item->product->price;
 
-                        if ((float)$item->custom_price) {
+                        if (! is_null($item->custom_price)) {
                             $price = $item->custom_price;
                         } else {
                             $price = $this->price->getMinimalPrice($productFlat);
                         }
 
                         $item->update([
-                            'price' => $price,
+                            'price' => core()->convertPrice($price),
                             'base_price' => $price,
                             'total' => core()->convertPrice($price * ($item->quantity)),
                             'base_total' => $price * ($item->quantity),
@@ -930,27 +940,35 @@ class Cart {
                     'country' => $shippingAddress->country,
                 ])->orderBy('tax_rate', 'desc')->get();
 
-            foreach ($taxRates as $rate) {
-                $haveTaxRate = false;
+            if (count( $taxRates) > 0) {
+                foreach ($taxRates as $rate) {
+                    $haveTaxRate = false;
 
-                if (! $rate->is_zip) {
-                    if ($rate->zip_code == '*' || $rate->zip_code == $shippingAddress->postcode) {
-                        $haveTaxRate = true;
+                    if (! $rate->is_zip) {
+                        if ($rate->zip_code == '*' || $rate->zip_code == $shippingAddress->postcode) {
+                            $haveTaxRate = true;
+                        }
+                    } else {
+                        if ($shippingAddress->postcode >= $rate->zip_from && $shippingAddress->postcode <= $rate->zip_to) {
+                            $haveTaxRate = true;
+                        }
                     }
-                } else {
-                    if ($shippingAddress->postcode >= $rate->zip_from && $shippingAddress->postcode <= $rate->zip_to) {
-                        $haveTaxRate = true;
+
+                    if ($haveTaxRate) {
+                        $item->tax_percent = $rate->tax_rate;
+                        $item->tax_amount = ($item->total * $rate->tax_rate) / 100;
+                        $item->base_tax_amount = ($item->base_total * $rate->tax_rate) / 100;
+
+                        $item->save();
+                        break;
                     }
                 }
+            } else {
+                $item->tax_percent = 0;
+                $item->tax_amount = 0;
+                $item->base_tax_amount = 0;
 
-                if ($haveTaxRate) {
-                    $item->tax_percent = $rate->tax_rate;
-                    $item->tax_amount = ($item->total * $rate->tax_rate) / 100;
-                    $item->base_tax_amount = ($item->base_total * $rate->tax_rate) / 100;
-
-                    $item->save();
-                    break;
-                }
+                $item->save();
             }
         }
     }
@@ -1053,6 +1071,8 @@ class Cart {
             'base_sub_total' => $data['base_sub_total'],
             'tax_amount' => $data['tax_total'],
             'base_tax_amount' => $data['base_tax_total'],
+            'discount_amount' => $data['discount_amount'],
+            'base_discount_amount' => $data['base_discount_amount'],
 
             'shipping_address' => array_except($data['shipping_address'], ['id', 'cart_id']),
             'billing_address' => array_except($data['billing_address'], ['id', 'cart_id']),
@@ -1090,6 +1110,9 @@ class Cart {
             'tax_percent' => $data['tax_percent'],
             'tax_amount' => $data['tax_amount'],
             'base_tax_amount' => $data['base_tax_amount'],
+            'discount_percent' => $data['discount_percent'],
+            'discount_amount' => $data['discount_amount'],
+            'base_discount_amount' => $data['base_discount_amount'],
             'additional' => $data['additional'],
         ];
 
@@ -1105,16 +1128,21 @@ class Cart {
      *
      * Move a wishlist item to cart
      */
-    public function moveToCart($wishlistItem) {
+    public function moveToCart($wishlistItem)
+    {
         $product = $wishlistItem->product;
 
         if ($product->type == 'simple') {
             $data['quantity'] = 1;
             $data['product'] = $product->id;
 
+            \Event::fire('checkout.cart.add.before', $product->id);
+
             $result = $this->add($product->id, $data);
 
             if ($result) {
+                \Event::fire('checkout.cart.add.after', $result);
+
                 return 1;
             } else {
                 return 0;
@@ -1129,7 +1157,8 @@ class Cart {
      *
      * @param instance cartItem $id
      */
-    public function moveToWishlist($itemId) {
+    public function moveToWishlist($itemId)
+    {
         $cart = $this->getCart();
         $items = $cart->items;
         $wishlist = [];
@@ -1176,7 +1205,8 @@ class Cart {
      *
      * @return response mixed
      */
-    public function proceedToBuyNow($id) {
+    public function proceedToBuyNow($id, $quantity)
+    {
         $product = $this->product->findOneByField('id', $id);
 
         if ($product->type == 'configurable') {
@@ -1191,7 +1221,7 @@ class Cart {
 
                 $data['product'] = $parent->id;
                 $data['selected_configurable_option'] = $simpleOrVariant->id;
-                $data['quantity'] = 1;
+                $data['quantity'] = $quantity;
                 $data['super_attribute'] = 'From Buy Now';
 
                 $result = $this->add($parent->id, $data);
@@ -1200,7 +1230,7 @@ class Cart {
             } else {
                 $data['product'] = $id;
                 $data['is_configurable'] = false;
-                $data['quantity'] = 1;
+                $data['quantity'] = $quantity;
 
                 $result = $this->add($id, $data);
 

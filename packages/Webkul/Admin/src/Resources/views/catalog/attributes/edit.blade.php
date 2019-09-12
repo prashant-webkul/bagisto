@@ -71,6 +71,15 @@
                                     <option value="date" {{ $selectedOption == 'date' ? 'selected' : '' }}>
                                         {{ __('admin::app.catalog.attributes.date') }}
                                     </option>
+                                    <option value="image" {{ $selectedOption == 'image' ? 'selected' : '' }}>
+                                        {{ __('admin::app.catalog.attributes.image') }}
+                                    </option>
+                                    <option value="file" {{ $selectedOption == 'file' ? 'selected' : '' }}>
+                                        {{ __('admin::app.catalog.attributes.file') }}
+                                    </option>
+                                    <option value="file" {{ $selectedOption == 'checkbox' ? 'selected' : '' }}>
+                                        {{ __('admin::app.catalog.attributes.checkbox') }}
+                                    </option>
                                 </select>
                                 <input type="hidden" name="type" value="{{ $attribute->type }}"/>
                             </div>
@@ -95,7 +104,7 @@
                                 <span class="control-error" v-if="errors.has('admin_name')">@{{ errors.first('admin_name') }}</span>
                             </div>
 
-                            @foreach (Webkul\Core\Models\Locale::all() as $locale)
+                            @foreach (app('Webkul\Core\Repositories\LocaleRepository')->all() as $locale)
 
                                 <div class="control-group">
                                     <label for="locale-{{ $locale->code }}">{{ $locale->name . ' (' . $locale->code . ')' }}</label>
@@ -257,6 +266,18 @@
                                 </select>
                             </div>
 
+                            <div class="control-group">
+                                <label for="use_in_flat">{{ __('admin::app.catalog.attributes.use_in_flat') }}</label>
+                                <select class="control" id="use_in_flat" name="use_in_flat">
+                                    <option value="0" {{ $attribute->use_in_flat ? '' : 'selected' }}>
+                                        {{ __('admin::app.catalog.attributes.no') }}
+                                    </option>
+                                    <option value="1" {{ $attribute->use_in_flat ? 'selected' : '' }}>
+                                        {{ __('admin::app.catalog.attributes.yes') }}
+                                    </option>
+                                </select>
+                            </div>
+
                             {!! view_render_event('bagisto.admin.catalog.attribute.edit_form_accordian.configuration.controls.after', ['attribute' => $attribute]) !!}
 
                         </div>
@@ -303,7 +324,7 @@
 
                             <th>{{ __('admin::app.catalog.attributes.admin_name') }}</th>
 
-                            @foreach (Webkul\Core\Models\Locale::all() as $locale)
+                            @foreach (app('Webkul\Core\Repositories\LocaleRepository')->all() as $locale)
 
                                 <th>{{ $locale->name . ' (' . $locale->code . ')' }}</th>
 
@@ -333,7 +354,7 @@
                                 </div>
                             </td>
 
-                            @foreach (Webkul\Core\Models\Locale::all() as $locale)
+                            @foreach (app('Webkul\Core\Repositories\LocaleRepository')->all() as $locale)
                                 <td>
                                     <div class="control-group" :class="[errors.has(localeInputName(row, '{{ $locale->code }}')) ? 'has-error' : '']">
                                         <input type="text" v-validate="'{{ app()->getLocale() }}' == '{{ $locale->code }}' ? 'required': ''" v-model="row['{{ $locale->code }}']" :name="localeInputName(row, '{{ $locale->code }}')" class="control" data-vv-as="&quot;{{ $locale->name . ' (' . $locale->code . ')' }}&quot;"/>
@@ -370,7 +391,7 @@
 
             inject: ['$validator'],
 
-            data() {
+            data: function() {
                 return {
                     optionRowCount: 0,
                     optionRows: [],
@@ -379,7 +400,7 @@
                 }
             },
 
-            created () {
+            created: function () {
                 @foreach ($attribute->options as $option)
                     this.optionRowCount++;
                     var row = {
@@ -391,7 +412,7 @@
                             'swatch_value_url': '{{ $option->swatch_value_url }}'
                         };
 
-                    @foreach (Webkul\Core\Models\Locale::all() as $locale)
+                    @foreach (app('Webkul\Core\Repositories\LocaleRepository')->all() as $locale)
                         row['{{ $locale->code }}'] = "{{ $option->translate($locale->code)['label'] }}";
                     @endforeach
 
@@ -410,31 +431,31 @@
             },
 
             methods: {
-                addOptionRow () {
+                addOptionRow: function () {
                     var rowCount = this.optionRowCount++;
                     var row = {'id': 'option_' + rowCount};
 
-                    @foreach (Webkul\Core\Models\Locale::all() as $locale)
+                    @foreach (app('Webkul\Core\Repositories\LocaleRepository')->all() as $locale)
                         row['{{ $locale->code }}'] = '';
                     @endforeach
 
                     this.optionRows.push(row);
                 },
 
-                removeRow (row) {
+                removeRow: function (row) {
                     var index = this.optionRows.indexOf(row)
                     Vue.delete(this.optionRows, index);
                 },
 
-                adminName (row) {
+                adminName: function (row) {
                     return 'options[' + row.id + '][admin_name]';
                 },
 
-                localeInputName (row, locale) {
+                localeInputName: function (row, locale) {
                     return 'options[' + row.id + '][' + locale + '][label]';
                 },
 
-                sortOrderName (row) {
+                sortOrderName: function (row) {
                     return 'options[' + row.id + '][sort_order]';
                 }
             }

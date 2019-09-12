@@ -7,12 +7,11 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Event;
 use Webkul\Product\Http\Requests\ProductForm;
 use Webkul\Product\Repositories\ProductRepository as Product;
-use Webkul\Product\Repositories\ProductGridRepository as ProductGrid;
-use Webkul\Product\Repositories\ProductFlatRepository as ProductFlat;
 use Webkul\Product\Repositories\ProductAttributeValueRepository as ProductAttributeValue;
 use Webkul\Attribute\Repositories\AttributeFamilyRepository as AttributeFamily;
 use Webkul\Category\Repositories\CategoryRepository as Category;
 use Webkul\Inventory\Repositories\InventorySourceRepository as InventorySource;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Product controller
@@ -58,21 +57,20 @@ class ProductController extends Controller
     protected $product;
 
     /**
-     * ProductGrid Repository object
+     * ProductAttributeValueRepository object
      *
      * @var array
      */
-    protected $productGrid;
-    protected $productFlat;
     protected $productAttributeValue;
 
     /**
      * Create a new controller instance.
      *
-     * @param  \Webkul\Attribute\Repositories\AttributeFamilyRepository  $attributeFamily
-     * @param  \Webkul\Category\Repositories\CategoryRepository          $category
-     * @param  \Webkul\Inventory\Repositories\InventorySourceRepository  $inventorySource
-     * @param  \Webkul\Product\Repositories\ProductRepository            $product
+     * @param  \Webkul\Attribute\Repositories\AttributeFamilyRepository     $attributeFamily
+     * @param  \Webkul\Category\Repositories\CategoryRepository             $category
+     * @param  \Webkul\Inventory\Repositories\InventorySourceRepository     $inventorySource
+     * @param  \Webkul\Product\Repositories\ProductRepository               $product
+     * @param  \Webkul\Product\Repositories\ProductAttributeValueRepository $productAttributeValue
      * @return void
      */
     public function __construct(
@@ -80,9 +78,8 @@ class ProductController extends Controller
         Category $category,
         InventorySource $inventorySource,
         Product $product,
-        ProductGrid $productGrid,
-        ProductFlat $productFlat,
-        ProductAttributeValue $productAttributeValue)
+        ProductAttributeValue $productAttributeValue
+    )
     {
         $this->attributeFamily = $attributeFamily;
 
@@ -91,10 +88,6 @@ class ProductController extends Controller
         $this->inventorySource = $inventorySource;
 
         $this->product = $product;
-
-        $this->productGrid = $productGrid;
-
-        $this->productFlat = $productFlat;
 
         $this->productAttributeValue = $productAttributeValue;
 
@@ -173,9 +166,7 @@ class ProductController extends Controller
 
         $inventorySources = $this->inventorySource->all();
 
-        $allProducts = $this->productGrid->all();
-
-        return view($this->_config['view'], compact('product', 'categories', 'inventorySources', 'allProducts'));
+        return view($this->_config['view'], compact('product', 'categories', 'inventorySources'));
     }
 
     /**
@@ -303,5 +294,21 @@ class ProductController extends Controller
         } else {
             return view($this->_config['view']);
         }
+    }
+
+     /**
+     * Download image or file
+     *
+     * @param  int $productId, $attributeId
+     * @return \Illuminate\Http\Response
+     */
+    public function download($productId, $attributeId)
+    {
+        $productAttribute = $this->productAttributeValue->findOneWhere([
+            'product_id'   => $productId,
+            'attribute_id' => $attributeId
+        ]);
+
+        return Storage::download($productAttribute['text_value']);
     }
 }

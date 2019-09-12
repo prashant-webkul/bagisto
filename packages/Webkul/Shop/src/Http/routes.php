@@ -39,6 +39,10 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function 
         'view' => 'shop::checkout.cart.index'
     ])->name('shop.checkout.cart.index');
 
+        Route::post('checkout/check/coupons', 'Webkul\Shop\Http\Controllers\OnepageController@applyCoupon')->name('shop.checkout.check.coupons');
+
+        Route::post('checkout/remove/coupon', 'Webkul\Shop\Http\Controllers\OnepageController@removeCoupon')->name('shop.checkout.remove.coupon');
+
     //Cart Items Add
     Route::post('checkout/cart/add/{id}', 'Webkul\Shop\Http\Controllers\CartController@add')->defaults('_config', [
         'redirect' => 'shop.checkout.cart.index'
@@ -64,6 +68,9 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function 
     Route::get('/checkout/onepage', 'Webkul\Shop\Http\Controllers\OnepageController@index')->defaults('_config', [
         'view' => 'shop::checkout.onepage'
     ])->name('shop.checkout.onepage.index');
+
+    //Checkout Save Order
+    Route::get('/checkout/summary', 'Webkul\Shop\Http\Controllers\OnepageController@summary')->name('shop.checkout.summary');
 
     //Checkout Save Address Form Store
     Route::post('/checkout/save-address', 'Webkul\Shop\Http\Controllers\OnepageController@saveAddress')->name('shop.checkout.save-address');
@@ -107,6 +114,11 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function 
     Route::post('/product/{slug}/review', 'Webkul\Shop\Http\Controllers\ReviewController@store')->defaults('_config', [
         'redirect' => 'shop.home.index'
     ])->name('shop.reviews.store');
+
+     // Download file or image
+    Route::get('/product/{id}/{attribute_id}', 'Webkul\Shop\Http\Controllers\ProductController@download')->defaults('_config', [
+        'view' => 'shop.products.index'
+    ])->name('shop.product.file.download');
 
     //customer routes starts here
     Route::prefix('customer')->group(function () {
@@ -274,6 +286,8 @@ Route::group(['middleware' => ['web', 'locale', 'theme', 'currency']], function 
         });
     });
     //customer routes end here
+
+    Route::get('pages/{slug}', 'Webkul\CMS\Http\Controllers\Shop\PagePresenterController@presenter')->name('shop.cms.page');
 
     Route::fallback('Webkul\Shop\Http\Controllers\HomeController@notFound');
 });

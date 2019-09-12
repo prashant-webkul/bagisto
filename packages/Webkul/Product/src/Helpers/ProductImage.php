@@ -15,7 +15,7 @@ class ProductImage extends AbstractProduct
      */
     public function getGalleryImages($product)
     {
-        if (! $product) 
+        if (! $product)
             return [];
 
         $images = [];

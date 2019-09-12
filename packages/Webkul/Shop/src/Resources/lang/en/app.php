@@ -135,6 +135,7 @@ return [
             'footer' => '© Copyright :year Webkul Software, All rights reserved',
             'invalid-creds' => 'Please Check Your Credentials And Try Again',
             'verify-first' => 'Verify Your Email Account First',
+            'not-activated' => 'Your activation seeks admin approval',
             'resend-verification' => 'Resend Verification Mail Again'
         ],
 
@@ -260,6 +261,7 @@ return [
                     'subtotal' => 'Subtotal',
                     'shipping-handling' => 'Shipping & Handling',
                     'tax' => 'Tax',
+                    'discount' => 'Discount',
                     'tax-percent' => 'Tax Percent',
                     'tax-amount' => 'Tax Amount',
                     'discount-amount' => 'Discount Amount',
@@ -339,18 +341,18 @@ return [
         'deleteall' => 'Delete All',
         'moveall' => 'Move All Products To Cart',
         'move-to-cart' => 'Move To Cart',
-        'error' => 'Cannot Add The Product To Wishlist Due To Unknown Problems, Please Checkback Later',
-        'add' => 'Item Successfully Added To Wishlist',
-        'remove' => 'Item Successfully Removed From Wishlist',
-        'moved' => 'Item Successfully Moved To Wishlist',
-        'move-error' => 'Item Cannot Be Moved To Wishlist, Please Try Again Later',
-        'success' => 'Item Successfully Added To Wishlist',
-        'failure' => 'Item Cannot Be Added To Wishlist, Please Try Again Later',
-        'already' => 'Item Already Present In Your Wishlist',
-        'removed' => 'Item Successfully Removed From Wishlist',
-        'remove-fail' => 'Item Cannot Be Removed From Wishlist, Please Try Again Later',
-        'empty' => 'You do not have any items in your Wishlist',
-        'remove-all-success' => 'All The Items From Your Wishlist Have Been Removed',
+        'error' => 'Cannot add product to wishlist due to unknown problems, please checkback later',
+        'add' => 'Item successfully added to wishlist',
+        'remove' => 'Item successfully removed from wishlist',
+        'moved' => 'Item successfully moved To cart',
+        'move-error' => 'Item cannot be moved to wishlist, Please try again later',
+        'success' => 'Item successfully added to wishlist',
+        'failure' => 'Item cannot be added to wishlist, Please try again later',
+        'already' => 'Item already present in your wishlist',
+        'removed' => 'Item successfully removed from wishlist',
+        'remove-fail' => 'Item cannot Be removed from wishlist, Please try again later',
+        'empty' => 'You do not have any items in your wishlist',
+        'remove-all-success' => 'All the items from your wishlist have been removed',
     ],
 
     // 'reviews' => [
@@ -396,7 +398,7 @@ return [
             'quantity-error' => 'Requested Quantity Is Not Available',
             'cart-subtotal' => 'Cart Subtotal',
             'cart-remove-action' => 'Do you really want to do this ?',
-            'partial-cart-update' => 'Only some of the product(s) were updated'
+            'partial-cart-update' => 'Only some of the product(s) were updated',
         ],
 
         'onepage' => [
@@ -432,7 +434,19 @@ return [
             'contact' => 'Contact',
             'place-order' => 'Place Order',
             'new-address' => 'Add New Address',
-            'save_as_address' => 'Save as Address'
+            'save_as_address' => 'Save as Address',
+            'apply-coupon' => 'Apply Coupon',
+            'amt-payable' => 'Amount Payable',
+            'got' => 'Got',
+            'free' => 'Free',
+            'coupon-used' => 'Coupon Used',
+            'applied' => 'Applied',
+            'back' => 'Back',
+            'cash-desc' => 'Cash On Delivery',
+            'money-desc' => 'Money Transfer',
+            'paypal-desc' => 'Paypal Standard',
+            'free-desc' => 'This is a free shipping',
+            'flat-desc' => 'This is a flat rate'
         ],
 
         'total' => [
@@ -441,7 +455,14 @@ return [
             'grand-total' => 'Grand Total',
             'delivery-charges' => 'Delivery Charges',
             'tax' => 'Tax',
-            'price' => 'price'
+            'discount' => 'Discount',
+            'price' => 'price',
+            'disc-amount' => 'Amount discounted',
+            'new-grand-total' => 'New Grand Total',
+            'coupon' => 'Coupon',
+            'coupon-applied' => 'Coupon Applied',
+            'remove-coupon' => 'Remove Coupon',
+            'cannot-apply-coupon' => 'Cannot Apply Coupon'
         ],
 
         'success' => [
@@ -457,7 +478,9 @@ return [
             'subject' => 'New Order Confirmation',
             'heading' => 'Order Confirmation!',
             'dear' => 'Dear :customer_name',
+            'dear-admin' => 'Dear :admin_name',
             'greeting' => 'Thanks for your Order :order_id placed on :created_at',
+            'greeting-admin' => 'Order Id :order_id placed on :created_at',
             'summary' => 'Summary of Order',
             'shipping-address' => 'Shipping Address',
             'billing-address' => 'Billing Address',
@@ -469,6 +492,7 @@ return [
             'subtotal' => 'Subtotal',
             'shipping-handling' => 'Shipping & Handling',
             'tax' => 'Tax',
+            'discount' => 'Discount',
             'grand-total' => 'Grand Total',
             'final-summary' => 'Thanks for showing your interest in our store we will send you tracking number once it shipped',
             'help' => 'If you need any kind of help please contact us at :support_email',
@@ -490,11 +514,15 @@ return [
             'greeting' => 'An Order :order_id has been placed on :created_at',
         ],
         'forget-password' => [
+            'subject' => 'Customer Reset Password',
             'dear' => 'Dear :name',
             'info' => 'You are receiving this email because we received a password reset request for your account',
             'reset-password' => 'Reset Password',
             'final-summary' => 'If you did not request a password reset, no further action is required',
             'thanks' => 'Thanks!'
+        ],
+        'customer' => [
+            'subject' => 'New Customer Registration'
         ]
     ],
 

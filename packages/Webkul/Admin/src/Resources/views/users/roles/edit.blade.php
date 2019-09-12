@@ -54,7 +54,7 @@
                                     <option value="all" {{ $role->permission_type == 'all' ? 'selected' : '' }}>{{ __('admin::app.users.roles.all') }}</option>
                                 </select>
                             </div>
-                            
+
                             <div class="control-group tree-wrapper {{ $role->permission_type == 'all' ? 'hide' : '' }}">
                                 <tree-view value-field="key" id-field="key" items='@json($acl->items)' value='@json($role->permissions)'></tree-view>
                             </div>
@@ -75,7 +75,7 @@
                 } else {
                     $('.tree-wrapper').addClass('hide')
                 }
-                
+
             })
         });
     </script>

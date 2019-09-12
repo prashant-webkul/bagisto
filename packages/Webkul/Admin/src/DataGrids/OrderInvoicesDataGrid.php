@@ -19,7 +19,7 @@ class OrderInvoicesDataGrid extends DataGrid
 
     public function prepareQueryBuilder()
     {
-        $queryBuilder = DB::table('invoices')->select('id', 'order_id', 'state', 'grand_total', 'created_at');
+        $queryBuilder = DB::table('invoices')->select('id', 'order_id', 'state', 'base_grand_total', 'created_at');
 
         $this->setQueryBuilder($queryBuilder);
     }
@@ -45,7 +45,7 @@ class OrderInvoicesDataGrid extends DataGrid
         ]);
 
         $this->addColumn([
-            'index' => 'grand_total',
+            'index' => 'base_grand_total',
             'label' => trans('admin::app.datagrid.grand-total'),
             'type' => 'price',
             'searchable' => true,
@@ -65,7 +65,7 @@ class OrderInvoicesDataGrid extends DataGrid
 
     public function prepareActions() {
         $this->addAction([
-            'type' => 'View',
+            'title' => 'Order Invoice View',
             'method' => 'GET', // use GET request only for redirect purposes
             'route' => 'admin.sales.invoices.view',
             'icon' => 'icon eye-icon'

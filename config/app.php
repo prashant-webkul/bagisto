@@ -138,7 +138,7 @@ return [
     /*
         Application Version
     */
-    'version' => env('APP_VERSION', '0.1.5'),
+    'version' => env('APP_VERSION', '0.1.6'),
 
     /**
      * Blacklisting attributes while debugging
@@ -203,7 +203,6 @@ return [
          */
 
         Dimsav\Translatable\TranslatableServiceProvider::class,
-        Propaganistas\LaravelIntl\IntlServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -245,7 +244,8 @@ return [
         Webkul\Sales\Providers\SalesServiceProvider::class,
         Webkul\Tax\Providers\TaxServiceProvider::class,
         Webkul\API\Providers\APIServiceProvider::class,
-        Webkul\Discount\Providers\DiscountServiceProvider::class
+        Webkul\Discount\Providers\DiscountServiceProvider::class,
+        Webkul\CMS\Providers\CMSServiceProvider::class
     ],
 
     /*
@@ -303,6 +303,6 @@ return [
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Concord' => Konekt\Concord\Facades\Concord::class,
-        'Helper'  => Konekt\Concord\Facades\Helper::class,
+        'Helper'  => Konekt\Concord\Facades\Helper::class
     ],
 ];

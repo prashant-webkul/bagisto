@@ -16,12 +16,20 @@
                 <a href="{{ route('admin.catalog-rule.create') }}" class="btn btn-lg btn-primary">
                     {{ __('admin::app.promotion.add-catalog-rule') }}
                 </a>
+
+                <a href="{{ route('admin.catalog-rule.apply') }}" class="btn btn-lg btn-primary">
+                    {{ __('admin::app.promotion.apply') }}
+                </a>
+
+                <a href="{{ route('admin.catalog-rule.declut') }}" class="btn btn-lg btn-primary">
+                    {{ __('admin::app.promotion.declut') }}
+                </a>
             </div>
         </div>
 
         <div class="page-content">
-            @inject('customerGrid','Webkul\Admin\DataGrids\CustomerDataGrid')
-            {!! $customerGrid->render() !!}
+            @inject('catalogRuleGrid','Webkul\Admin\DataGrids\CatalogRuleDataGrid')
+            {!! $catalogRuleGrid->render() !!}
         </div>
     </div>
 @endsection

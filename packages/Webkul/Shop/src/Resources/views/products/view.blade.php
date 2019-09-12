@@ -25,6 +25,7 @@
                     @include ('shop::products.view.gallery')
 
                     <div class="details">
+
                         <div class="product-heading">
                             <span>{{ $product->name }}</span>
                         </div>
@@ -116,42 +117,36 @@
     <script>
 
         Vue.component('product-view', {
+
             template: '#product-view-template',
 
             inject: ['$validator'],
 
             methods: {
-                onSubmit (e) {
+                onSubmit: function(e) {
                     if (e.target.getAttribute('type') != 'submit')
                         return;
 
                     e.preventDefault();
 
-                    this.$validator.validateAll().then(result => {
+                    this.$validator.validateAll().then(function (result) {
                         if (result) {
-                            if (e.target.getAttribute('data-href')) {
-                                window.location.href = e.target.getAttribute('data-href');
-                            } else {
-                                document.getElementById('product-form').submit();
-                            }
+                          if (e.target.getAttribute('data-href')) {
+                            window.location.href = e.target.getAttribute('data-href');
+                          } else {
+                            document.getElementById('product-form').submit();
+                          }
                         }
                     });
                 }
             }
         });
 
-        document.onreadystatechange = function () {
-            var state = document.readyState
-            var galleryTemplate = document.getElementById('product-gallery-template');
+        $(document).ready(function() {
             var addTOButton = document.getElementsByClassName('add-to-buttons')[0];
-
-            if (galleryTemplate) {
-                if (state != 'interactive') {
-                    document.getElementById('loader').style.display="none";
-                    addTOButton.style.display="flex";
-                }
-            }
-        }
+            document.getElementById('loader').style.display="none";
+            addTOButton.style.display="flex";
+        });
 
         window.onload = function() {
             var thumbList = document.getElementsByClassName('thumb-list')[0];
@@ -202,6 +197,7 @@
                 }
             }
             document.getElementById("quantity").value = quantity;
+
             event.preventDefault();
         }
     </script>
