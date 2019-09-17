@@ -2,7 +2,6 @@
 
 namespace Webkul\PreOrder\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use Webkul\PreOrder\Repositories\PreOrderItemRepository;
@@ -51,7 +50,7 @@ class PreOrderController extends Controller
      * @return Mixed
      */
     public function index($url)
-    {   
+    {
         return view($this->_config['view']);
     }
 
@@ -83,7 +82,7 @@ class PreOrderController extends Controller
                     'email_sent' => 1
                 ], $preOrderItem->id);
             } catch (\Exception $e) {
-
+                dd($e);
             }
         }
 

@@ -1,3 +1,27 @@
+@php
+    $logo = $favicon = null;
+
+    $matter = app('Webkul\SAASCustomizer\Models\SuperAdmin');
+
+    $matter = $matter->all();
+
+    if ($matter->count()) {
+        $images = $matter->first();
+
+        $images = json_decode($images->misc);
+
+        if (isset($images) && $images != "") {
+            if (isset($images->logo)) {
+                $logo = $images->logo;
+            }
+
+            if (isset($images->favicon)) {
+                $favicon = $images->favicon;
+            }
+        }
+    }
+@endphp
+
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
     <head>
@@ -8,7 +32,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <link rel="icon" sizes="16x16" href="{{ asset('vendor/webkul/ui/assets/images/favicon.ico') }}" />
+        @if (isset($favicon))
+            <link rel="icon" sizes="16x16" href="{{ asset('storage/'.$favicon) }}" />
+        @else
+            <link rel="icon" sizes="16x16" href="{{ asset('vendor/webkul/ui/assets/images/favicon.ico') }}" />
+        @endif
+
         <link rel="stylesheet" href="{{ asset('vendor/webkul/admin/assets/css/admin.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/webkul/ui/assets/css/ui.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/webkul/saas/assets/css/saas.css') }}">

@@ -34,7 +34,19 @@ return [
     'channel-warning' => 'Creating more than one channel is prohibited',
 
     'menu' => [
-        'companies' => 'Companies'
+        'companies' => 'Companies',
+        'account' => 'Account'
+    ],
+
+    'account' => [
+        'manage' => 'Manage Account',
+        'email' => 'Email',
+        'password' => 'Password',
+        'new-password' => 'New password',
+        'old-password' => 'Old password',
+        'confirm-password' => 'Confirm password',
+        'pass-check-fail' => 'Password do not match',
+        'account-updated' => 'Account updated successfully'
     ],
 
     'connect-stripe' => [

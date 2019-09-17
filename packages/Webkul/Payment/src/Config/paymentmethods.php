@@ -12,7 +12,7 @@ return [
     'moneytransfer' => [
         'code' => 'moneytransfer',
         'title' => 'Invoice',
-        'description' => 'shop::app.checkout.onepage.money-desc',
+        'description' => 'Invoicing',
         'class' => 'Webkul\Payment\Payment\MoneyTransfer',
         'active' => true,
         'sort' => 2

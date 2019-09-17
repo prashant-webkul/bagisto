@@ -112,6 +112,14 @@
         .dashboard .card .card-info ul li .description .name {
             color: {{ $primaryColor }}
         }
+
+        section.product-detail div.layouter .form-container div.product-image-group div .thumb-list .thumb-frame.active {
+            border-color: {{ $secondaryColor }}
+        }
+
+        .add-to-buttons .addtocart {
+            background: {{ $secondaryColor }} !important;
+        }
     }
     </style>
 @endif

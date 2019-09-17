@@ -96,6 +96,43 @@
                     @endif
                 </tab>
 
+                <tab name="{{ __('customerdocument::app.admin.documents.other') }}" :selected="true">
+                    @if (! empty($otherDocument))
+                    <div class="account-items-list" style="display: none;">
+                        <div class="table" style="margin-bottom: 20px;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>{{ __('customerdocument::app.admin.customers.name') }}</th>
+                                        <th>{{ __('customerdocument::app.admin.customers.description') }}</th>
+                                        <th>{{ __('customerdocument::app.admin.customers.download') }}</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @foreach ($otherDocument as $document)
+                                        <tr>
+                                            <td>{{ $document->name }}</td>
+                                            <td>{{ $document->description }}</td>
+                                            <td>
+                                                <a href="{{ route('customer.document.download', $document->id) }}">
+                                                    <i class="icon sort-down-icon"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @else
+                        <div class="empty" style="display: none; margin-top: 20px;">
+                            {{ __('customerdocument::app.admin.customers.empty') }}
+                        </div>
+                    @endif
+                </tab>
+
             </tabs>
 
         </div>

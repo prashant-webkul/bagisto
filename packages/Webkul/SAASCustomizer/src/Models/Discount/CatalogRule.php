@@ -21,7 +21,7 @@ class CatalogRule extends BaseModel
         if (auth()->guard('super-admin')->check() || ! isset($company->id)) {
             return new \Illuminate\Database\Eloquent\Builder($query);
         } else {
-            return new \Illuminate\Database\Eloquent\Builder($query->where('cart_rules' . '.company_id', $company->id));
+            return new \Illuminate\Database\Eloquent\Builder($query->where('catalog_rules' . '.company_id', $company->id));
         }
     }
 }

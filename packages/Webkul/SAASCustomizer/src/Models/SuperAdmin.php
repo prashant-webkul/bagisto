@@ -11,7 +11,7 @@ class SuperAdmin extends Authenticatable
 
     protected $table = 'super_admins';
 
-    protected $fillable = ['email', 'password', 'remember_token'];
+    protected $fillable = ['email', 'password', 'remember_token', 'misc'];
 
     /**
      * The attributes that should be hidden for arrays.

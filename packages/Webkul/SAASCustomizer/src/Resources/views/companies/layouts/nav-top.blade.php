@@ -2,7 +2,11 @@
     <div class="navbar-top-left">
         <div class="brand-logo">
             <a href="{{ route('admin.dashboard.index') }}">
-                <img src="{{ asset('vendor/webkul/ui/assets/images/logo.png') }}" alt="Bagisto"/>
+                @if (isset($logo))
+                    <img src="{{ asset('storage/'.$logo) }}" alt="Bagisto" style="max-height: 40px;" />
+                @else
+                    <img src="{{ asset('vendor/webkul/ui/assets/images/logo.png') }}" alt="Bagisto"/>
+                @endif
             </a>
         </div>
     </div>

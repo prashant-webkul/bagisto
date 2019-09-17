@@ -16,7 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class ProductInStockNotification extends Mailable
 {
     use Queueable, SerializesModels;
-    
+
     /**
      * The order item instance.
      *

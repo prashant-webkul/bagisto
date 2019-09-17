@@ -37,5 +37,11 @@ Route::group(['middleware' => 'web'], function () {
 
         // To show the stats of the registered companies
         Route::get('companies/status/{id}', 'Webkul\SAASCustomizer\Http\Controllers\CompanyController@changeStatus')->name('super.companies.change-status');
+
+        // To load super admin account management screen
+        Route::get('account', 'Webkul\SAASCustomizer\Http\Controllers\SuperUserController@account')->name('super.admin.account');
+
+        // To update super admin account
+        Route::post('account', 'Webkul\SAASCustomizer\Http\Controllers\SuperUserController@update')->name('super.admin.update');
     });
 });

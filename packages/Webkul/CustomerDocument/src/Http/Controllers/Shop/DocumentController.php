@@ -58,6 +58,8 @@ class DocumentController extends Controller
                 $marketingDocument[] = $document;
             } else if ($document->type == 'product') {
                 $productDocument[] = $document;
+            } else if ($document->type == 'other') {
+                $otherDocument[] = $document;
             }
         }
 
