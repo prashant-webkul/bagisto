@@ -1,16 +1,16 @@
 <?php
 
 return  [
-    'connect-stripe' => 'Connect Stripe',
+    'connect-stripe' => 'Connect RazzoPay',
     'revoke-access' => 'Revoke Your Stripe Account Access',
     'client-id-missing' => 'The client id has not been set up by admin for the platform.',
     'nameoncard' => 'Name on Card',
     'click-here' => 'Click Here',
-    'not-ready' => 'This seller ain\'t Stripe ready',
+    'not-ready' => 'This seller ain\'t RazzoPay ready',
     'pay-now' => 'Pay Now',
-    'account-connected' => 'Your Stripe account is successfully integrated with the platform',
+    'account-connected' => 'Your RazzoPay account is successfully integrated with the platform',
     'problem-connecting' => 'There was some problem in onboarding your account',
-    'stripe-unavailable' => 'Stripe unavailable for this seller',
+    'stripe-unavailable' => 'RazzoPay unavailable for this seller',
     'expirymonth' => 'Expiration Month',
     'expiryyear' => 'Expiration Year',
     'cvc' => 'CVC',
@@ -27,5 +27,7 @@ return  [
     'some-error' => 'Some error occurred',
     'transaction-fee' => 'Transaction Fees',
     'more-info' => '(after successful order)',
-    'continue' => 'Please click on continue to complete your transaction'
+    'continue' => 'Please click on continue to complete your transaction',
+    'connect-title' => 'Connect Your RazzoPay Account',
+    'connect-page-title' => 'Connect RazzoPay Account'
 ];

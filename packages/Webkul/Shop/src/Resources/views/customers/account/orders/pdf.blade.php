@@ -92,7 +92,7 @@
 
                 <div class="row">
                     <span class="label">{{ __('shop::app.customer.account.order.view.order-id') }} -</span>
-                    <span class="value">#{{ $invoice->order_id }}</span>
+                    <span class="value">#{{ $invoice->order->increment_id }}</span>
                 </div>
 
                 <div class="row">
@@ -205,6 +205,14 @@
                         <td>-</td>
                         <td>{{ core()->formatPrice($invoice->shipping_amount, $invoice->order->order_currency_code) }}</td>
                     </tr>
+
+                    @if ($invoice->base_discount_amount > 0)
+                        <tr>
+                            <td>{{ __('shop::app.customer.account.order.view.discount') }}</td>
+                            <td>-</td>
+                            <td>{{ core()->formatPrice($invoice->discount_amount, $invoice->order_currency_code) }}</td>
+                        </tr>
+                    @endif
 
                     <tr>
                         <td>{{ __('shop::app.customer.account.order.view.tax') }}</td>

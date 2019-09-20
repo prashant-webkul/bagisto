@@ -9,43 +9,52 @@ return [
         'key' => 'sales.carriers',
         'name' => 'admin::app.admin.system.shipping-methods',
         'sort' => 1,
-    ], [
-        'key' => 'sales.carriers.free',
-        'name' => 'admin::app.admin.system.free-shipping',
-        'sort' => 1,
-        'fields' => [
-            [
-                'name' => 'title',
-                'title' => 'admin::app.admin.system.title',
-                'type' => 'text',
-                'validation' => 'required',
-                'channel_based' => false,
-                'locale_based' => true
-            ], [
-                'name' => 'description',
-                'title' => 'admin::app.admin.system.description',
-                'type' => 'textarea',
-                'channel_based' => false,
-                'locale_based' => true
-            ], [
-                'name' => 'active',
-                'title' => 'admin::app.admin.system.status',
-                'type' => 'select',
-                'options' => [
-                    [
-                        'title' => 'Active',
-                        'value' => true
-                    ], [
-                        'title' => 'Inactive',
-                        'value' => false
-                    ]
-                ],
-                'validation' => 'required',
-                'channel_based' => false,
-                'locale_based' => true
-            ]
-        ]
-    ], [
+    ],
+    // [
+    //     'key' => 'sales.carriers.free',
+    //     'name' => 'admin::app.admin.system.free-shipping',
+    //     'sort' => 1,
+    //     'fields' => [
+    //         [
+    //             'name' => 'title',
+    //             'title' => 'admin::app.admin.system.title',
+    //             'type' => 'text',
+    //             'validation' => 'required',
+    //             'channel_based' => false,
+    //             'locale_based' => true
+    //         ], [
+    //             'name' => 'description',
+    //             'title' => 'admin::app.admin.system.description',
+    //             'type' => 'textarea',
+    //             'channel_based' => false,
+    //             'locale_based' => true
+    //         ], [
+    //             'name' => 'active',
+    //             'title' => 'admin::app.admin.system.status',
+    //             'type' => 'select',
+    //             'options' => [
+    //                 [
+    //                     'title' => 'Active',
+    //                     'value' => true
+    //                 ], [
+    //                     'title' => 'Inactive',
+    //                     'value' => false
+    //                 ]
+    //             ],
+    //             'validation' => 'required',
+    //             'channel_based' => false,
+    //             'locale_based' => true
+    //         ], [
+    //             'name' => 'default',
+    //             'title' => 'admin::app.admin.system.default',
+    //             'type' => 'boolean',
+    //             'validation' => 'required',
+    //             'channel_based' => false,
+    //             'locale_based' => true
+    //         ],
+    //     ]
+    // ],
+    [
         'key' => 'sales.carriers.flatrate',
         'name' => 'admin::app.admin.system.flate-rate-shipping',
         'sort' => 2,
@@ -99,7 +108,14 @@ return [
                 'validation' => 'required',
                 'channel_based' => false,
                 'locale_based' => true
-            ]
+            ], [
+                'name' => 'default',
+                'title' => 'admin::app.admin.system.default',
+                'type' => 'boolean',
+                'validation' => 'required',
+                'channel_based' => false,
+                'locale_based' => true
+            ],
         ]
     ], [
         'key' => 'sales.shipping',

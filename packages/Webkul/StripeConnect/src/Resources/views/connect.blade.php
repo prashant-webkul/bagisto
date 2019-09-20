@@ -1,14 +1,14 @@
 @extends('admin::layouts.content')
 
 @section('page_title')
-    Connect Stripe Account
+    {{ __('stripe::app.connect-page-title') }}
 @stop
 
 @section('content')
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h1>Connect Your Stripe Account</h1>
+                <h1>{{ __('stripe::app.connect-title') }}</h1>
             </div>
             <div class="page-action">
             </div>

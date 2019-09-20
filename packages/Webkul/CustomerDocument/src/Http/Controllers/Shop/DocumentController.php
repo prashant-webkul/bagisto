@@ -63,7 +63,7 @@ class DocumentController extends Controller
             }
         }
 
-        return view($this->_config['view'], compact('productDocument', 'marketingDocument'));
+        return view($this->_config['view'], compact('productDocument', 'marketingDocument', 'otherDocument'));
     }
 
     /**

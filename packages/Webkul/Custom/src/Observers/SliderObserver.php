@@ -8,21 +8,17 @@ use Company;
 
 class SliderObserver
 {
-    // public function creating(Slider $model)
-    // {
-    //     dd($model->content);
+    public function creating(Slider $model)
+    {
+        if (! auth()->guard('super-admin')->check()) {
+            $model->company_id = Company::getCurrent()->id;
+        }
+    }
 
-    //     if (! auth()->guard('super-admin')->check()) {
-    //         $model->company_id = Company::getCurrent()->id;
-    //     }
-    // }
-
-    // public function saving(Slider $model)
-
-    // {        dd($model->content);
-
-    //     if (! auth()->guard('super-admin')->check()) {
-    //         $model->company_id = Company::getCurrent()->id;
-    //     }
-    // }
+    public function saving(Slider $model)
+    {
+        if (! auth()->guard('super-admin')->check()) {
+            $model->company_id = Company::getCurrent()->id;
+        }
+    }
 }

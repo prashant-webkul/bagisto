@@ -9,14 +9,16 @@ return [
         'default_rate' => '10',
         'type' => 'per_unit',
         'class' => 'Webkul\Shipping\Carriers\FlatRate',
+        'default' => 'yes',
     ],
 
     'free' => [
         'code' => 'free',
         'title' => 'Free Shipping',
         'description' => 'Free Shipping',
-        'active' => true,
+        'active' => false,
         'default_rate' => '0',
         'class' => 'Webkul\Shipping\Carriers\Free',
+        'default' => 'yes',
     ]
 ];

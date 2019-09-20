@@ -23,13 +23,6 @@ return [
                 'channel_based' => false,
                 'locale_based' => false
             ], [
-                'name' => 'webfont',
-                'title' => 'webfont::app.webfont-api',
-                'type' => 'text',
-                'validation' => 'required',
-                'channel_based' => false,
-                'locale_based' => false
-            ], [
                 'name' => 'enable_backend',
                 'title' => 'webfont::app.webfont-backend',
                 'type' => 'select',
@@ -62,13 +55,13 @@ return [
             ], [
                 'name' => 'primary_color',
                 'title' => 'webfont::app.webfont-primary',
-                'type' => 'text',
+                'type' => 'color',
                 'channel_based' => false,
                 'locale_based' => false
             ], [
                 'name' => 'secondary_color',
                 'title' => 'webfont::app.webfont-secondary',
-                'type' => 'text',
+                'type' => 'color',
                 'channel_based' => false,
                 'locale_based' => false
             ]

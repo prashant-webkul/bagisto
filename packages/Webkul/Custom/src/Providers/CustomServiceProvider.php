@@ -23,7 +23,31 @@ class CustomServiceProvider extends ServiceProvider
         \Webkul\Custom\Models\Slider::observe(\Webkul\Custom\Observers\SliderObserver::class);
 
         $this->publishes([
+            __DIR__ . '/../Resources/assets' => public_path('vendor/webkul/custom/assets'),
+        ], 'public');
+
+        $this->publishes([
             __DIR__ . '/../Resources/views/navmenu.blade.php' => resource_path('views/vendor/shop/layouts/header/nav-menu/navmenu.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/shop-header.blade.php' => resource_path('views/vendor/shop/layouts/header/index.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/nav-top.blade.php' => resource_path('views/vendor/admin/layouts/nav-top.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/nav-top.blade.php' => resource_path('views/vendor/admin/layouts/nav-top.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/saas-top.blade.php' => resource_path('views/vendor/saas/companies/layouts/nav-top.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/admin-anon.blade.php' => resource_path('views/vendor/admin/layouts/anonymous-master.blade.php'),
         ]);
     }
 

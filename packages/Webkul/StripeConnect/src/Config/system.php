@@ -3,7 +3,7 @@
 return [
     [
         'key' => 'stripe',
-        'name' => 'Stripe Connect',
+        'name' => 'RazzoPay',
         'sort' => 5
     ], [
         'key' => 'stripe.connect',
@@ -16,7 +16,7 @@ return [
         'fields' => [
             [
                 'name' => 'stripefees',
-                'title' => 'Stripe fee to be paid by customer or seller',
+                'title' => 'RazzoPay fee to be paid by customer or seller',
                 'type' => 'select',
                 'options' => [
                     [

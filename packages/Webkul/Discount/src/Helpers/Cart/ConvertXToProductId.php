@@ -126,7 +126,7 @@ class ConvertXToProductId
         foreach ($attributeOptions as $attributeOption) {
             $selectedOptions = $attributeOption->value;
 
-            if ($attributeOption->type == 'select' || $attributeOption->type == 'multiselect') {
+            if (isset($attributeOption->type) && ($attributeOption->type == 'select' || $attributeOption->type == 'multiselect')) {
                 $attribute = $this->attribute->findWhere([
                     'code' => $attributeOption->attribute
                 ]);
@@ -164,6 +164,8 @@ class ConvertXToProductId
 
                 $selectedAttributeValues = collect();
 
+                $foundProducts = collect();
+
                 if ($attributeOption->attribute == 'sku') {
                     $testValue = $attributeOption->value;
                     $testCondition = $attributeOption->condition;
@@ -180,7 +182,7 @@ class ConvertXToProductId
                         ])->flatten()->all();
                     } else if ($testCondition == '=') {
                         $foundProducts = $this->product->findWhere([
-                            ['sku', '=', '%'.$testValue.'%'],
+                            ['sku', '=', $testValue],
                             ['type', '!=', 'configurable']
                         ])->flatten()->all();
                     }

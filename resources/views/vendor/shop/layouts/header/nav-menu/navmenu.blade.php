@@ -44,9 +44,11 @@ $cmsPages = app('Webkul\CMS\Repositories\CMSRepository')->findWhere([
         </li>
 
         @foreach($cmsPages as $cmsPage)
-            <li>
-                <a href="{{ route('shop.cms.page', $cmsPage->url_key) }}">{{ $cmsPage->page_title }}</a>
-            </li>
+            @if ($cmsPage->url_key == 'about-us' || $cmsPage->url_key == 'terms-condition' || $cmsPage->url_key == 'contact-us')
+                <li>
+                    <a href="{{ route('shop.cms.page', $cmsPage->url_key) }}">{{ $cmsPage->page_title }}</a>
+                </li>
+            @endif
         @endforeach
     </ul>
 

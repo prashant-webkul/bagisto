@@ -96,7 +96,7 @@
                     @endif
                 </tab>
 
-                <tab name="{{ __('customerdocument::app.admin.documents.other') }}" :selected="true">
+                <tab name="{{ __('customerdocument::app.admin.documents.other') }}" :selected="false">
                     @if (! empty($otherDocument))
                     <div class="account-items-list" style="display: none;">
                         <div class="table" style="margin-bottom: 20px;">
