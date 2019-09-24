@@ -23,10 +23,6 @@
                     <span class="control-error" v-if="errors.has('password')">@{{ errors.first('password') }}</span>
                 </div>
 
-                <div class="control-group">
-                    <a href="{{ route('admin.forget-password.create') }}">{{ __('admin::app.users.sessions.forget-password-link-title') }}</a>
-                </div>
-
                 <div class="button-group">
                     <button class="btn btn-xl btn-primary">{{ __('admin::app.users.sessions.submit-btn-title') }}</button>
                 </div>

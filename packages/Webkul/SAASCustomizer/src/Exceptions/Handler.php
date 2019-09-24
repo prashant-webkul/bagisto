@@ -46,7 +46,7 @@ class Handler extends ExceptionHandler
         }
 
         if ($exception->getMessage() == 'invalid_admin_login' || $exception->getMessage() == 'invalid_customer_login') {
-            return $this->response($path, 404, trans('saas::app.exceptions.auth'));
+            return $this->response($path, 401, trans('saas::app.exceptions.auth'));
         }
 
         if ($exception instanceof HttpException) {

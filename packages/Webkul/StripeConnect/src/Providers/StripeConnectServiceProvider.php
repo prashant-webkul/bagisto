@@ -17,11 +17,11 @@ class StripeConnectServiceProvider extends ServiceProvider
         include __DIR__ . '/../Http/routes.php';
 
         $this->publishes([
-            dirname(__DIR__) . '/Resources/assets/sass/stripe.scss' => base_path('public/vendor/webkul/stripe/assets/css/stripe.css')
+            __DIR__ . '/../../publishable/assets/css/stripe.css' => base_path('public/vendor/webkul/stripe/assets/css/stripe.css')
         ]);
 
         $this->publishes([
-            dirname(__DIR__) . '/Resources/assets/images/' => base_path('public/vendor/webkul/stripe/assets/images/')
+            __DIR__ . '/../../publishable/assets/images/' => base_path('public/vendor/webkul/stripe/assets/images/')
         ]);
 
         $this->publishes([

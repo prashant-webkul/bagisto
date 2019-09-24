@@ -15,5 +15,9 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Event::listen('checkout.cart.add.before', 'Webkul\CustomerCreditMax\Listeners\Cart@cartItemAddBefore');
+
+        Event::listen('bagisto.admin.customer.edit.after', function($viewRenderEventManager) {
+            $viewRenderEventManager->addTemplate('creditmax::admin.customers.creditmax');
+        });
     }
 }

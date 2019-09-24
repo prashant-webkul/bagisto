@@ -14,6 +14,12 @@ class CustomerCreditMaxServiceProvider extends ServiceProvider
      */
     public function boot(Router $router)
     {
+        $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'creditmax');
+
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'customercreditmax');
 
         $this->app->register(EventServiceProvider::class);

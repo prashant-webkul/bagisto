@@ -1,14 +1,14 @@
 @extends('admin::layouts.content')
 
 @section('page_title')
-    {{ __('stripe::app.connect-page-title') }}
+    Connect Stripe Account
 @stop
 
 @section('content')
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h1>{{ __('stripe::app.connect-title') }}</h1>
+                <h1>Connect Your Stripe Account</h1>
             </div>
             <div class="page-action">
             </div>
@@ -19,7 +19,7 @@
                 @inject('stripeConnect', 'Webkul\StripeConnect\Repositories\StripeConnectRepository')
 
                 @if($stripeConnect->findWhere(['company_id' => \Company::getCurrent()->id])->count() == 0)
-                    <a href="https://connect.stripe.com/oauth/authorize?client_id={{  env('STRIPE_CLIENT_ID') }}&response_type=code&stripe_landing=register&scope=read_write&stripe_user[redirect_uri]={{ route('admin.stripe.retrieve-grant') }}" class="btn btn-lg btn-primary">{{ __('stripe::app.connect-stripe') }}</a>
+                    <a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{  env('STRIPE_CLIENT_ID') }}&stripe_landing=register&scope=read_write&redirect_uri={{ route('admin.stripe.retrieve-grant') }}" class="btn btn-lg btn-primary">{{ __('stripe::app.connect-stripe') }}</a>
                 @else
                     <a href="{{ route('admin.stripe.revoke-access') }}" class="btn btn-lg btn-primary">{{ __('stripe::app.revoke-access') }}</a>
                 @endif

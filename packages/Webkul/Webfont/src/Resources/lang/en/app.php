@@ -15,7 +15,7 @@ return [
     'select-values' => 'Please select values',
     'create-success' => 'Fonts added to storage successfully',
     'activated' => 'Activated',
-    'de-activated' => 'Deactived',
+    'de-activated' => 'Deactivated',
     'active-success' => 'Font activated successfully',
     'delete-success' => 'Font deleted successfully',
     'delete-fail' => 'Cannot delete font',

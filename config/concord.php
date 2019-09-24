@@ -23,6 +23,7 @@ return [
         \Webkul\CMS\Providers\ModuleServiceProvider::class,
         \Webkul\StripeConnect\Providers\ModuleServiceProvider::class,
         \Webkul\PreOrder\Providers\ModuleServiceProvider::class,
-        \Webkul\Webfont\Providers\ModuleServiceProvider::class
+        \Webkul\Webfont\Providers\ModuleServiceProvider::class,
+        \Webkul\CustomerCreditMax\Providers\ModuleServiceProvider::class
     ]
 ];

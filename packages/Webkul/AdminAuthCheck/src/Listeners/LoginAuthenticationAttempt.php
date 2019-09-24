@@ -21,33 +21,37 @@ class LoginAuthenticationAttempt
 
     public function handle()
     {
-        $company = Company::getCurrent();
-
         if (! auth()->guard('super-admin')->check()) {
+            $company = Company::getCurrent();
+
             $credentials = request()->all();
+
             $credentials['company_id'] = $company->id;
 
             unset($credentials['_token']);
+        }
 
-            if (auth()->guard('admin')->check()) {
-                $admin = auth()->guard('admin')->user();
+        if (auth()->guard('customer')->check()) {
+            $customer = auth()->guard('customer')->user();
 
-                if (Company::getCurrent()->id != $admin->company_id) {
-                    auth()->guard('admin')->logout();
+            if (Company::getCurrent()->id != $customer->company_id) {
+                auth()->guard('customer')->logout();
 
-                    throw new \Exception('invalid_admin_login', 400);
-                }
-            } else if (auth()->guard('customer')->check()) {
-                $customer = auth()->guard('customer')->user();
-
-                if (Company::getCurrent()->id != $customer->company_id) {
+                if (! auth()->guard('customer')->attempt($credentials)) {
                     auth()->guard('customer')->logout();
 
-                    if (! auth()->guard('customer')->attempt($credentials)) {
-
-                        throw new \Exception('invalid_customer_login', 400);
-                    }
+                    throw new \Exception('invalid_customer_login', 400);
                 }
+            }
+        }
+
+        if (auth()->guard('admin')->check()) {
+            $admin = auth()->guard('admin')->user();
+
+            if (Company::getCurrent()->id != $admin->company_id) {
+                auth()->guard('admin')->logout();
+
+                throw new \Exception('invalid_admin_login', 400);
             }
         }
     }

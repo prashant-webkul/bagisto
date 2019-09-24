@@ -5,11 +5,12 @@ namespace Webkul\CustomerCreditMax\Listeners;
 use Illuminate\Support\Facades\Mail;
 use Webkul\Sales\Repositories\OrderRepository;
 use Cart as CartFacade;
+use Webkul\CustomerCreditMax\Repositories\CustomerCreditMaxRepository as CreditMax;
 
 /**
  * Cart event handler
  *
- * @author    Jitendra Singh <jitendra@webkul.com>
+ * @author  Webkul <support@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class Cart
@@ -22,13 +23,20 @@ class Cart
     protected $orderRepository;
 
     /**
+     * CustomerCreditMaxRepository Repository
+     */
+    protected $creditMax;
+
+    /**
      * Create a new cart event listener instance.
      *
      * @param  Webkul\Sales\Repositories\OrderRepository $orderRepository
      * @return void
      */
-    public function __construct(OrderRepository $orderRepository)
+    public function __construct(OrderRepository $orderRepository, CreditMax $creditMax)
     {
+        $this->creditMax = $creditMax;
+
         $this->orderRepository = $orderRepository;
     }
 
@@ -54,6 +62,10 @@ class Cart
         if (! core()->getConfigData('customer.settings.credit_max.status') || ! $this->getCurrentCustomerGuard()->check())
             return;
 
+        $limit = $this->creditMax->findOneWhere([
+            'customer_id' => auth()->guard('customer')->user()->id
+        ])->limit;
+
         $baseGrandTotal = $this->orderRepository->scopeQuery(function ($query) {
             return $query
                 ->where('orders.customer_id', $this->getCurrentCustomerGuard()->user()->id)
@@ -67,6 +79,6 @@ class Cart
         })->sum('base_grand_total_invoiced');
 
         if ( ($baseGrandTotal - $baseGrandTotalInvoiced) >= core()->getConfigData('customer.settings.credit_max.amount'))
-            throw new \Exception('You available credit limit has been exceeded. Please pay your pending invoice.');
+            throw new \Exception(trans('customercreditmax::app.admin.system.limit-exceeded'));
     }
 }
