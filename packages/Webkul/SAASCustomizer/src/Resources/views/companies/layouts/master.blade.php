@@ -45,10 +45,14 @@
         @yield('head')
 
         @yield('css')
+
+        {!! view_render_event('bagisto.saas.layout.head') !!}
     </head>
 
     <body @if (app()->getLocale() == 'ar') class="rtl" @endif style="scroll-behavior: smooth;">
         <div id="app">
+            {!! view_render_event('bagisto.saas.body.before') !!}
+
             <flash-wrapper ref='flashes'></flash-wrapper>
 
             @include ('saas::companies.layouts.nav-top')
@@ -90,5 +94,7 @@
         @stack('scripts')
 
         <div class="modal-overlay"></div>
+
+        {!! view_render_event('bagisto.saas.body.after') !!}
     </body>
 </html>
