@@ -42,7 +42,7 @@ class Product
     {
         $config = [];
 
-        foreach ($product->variants as $variant) {
+        foreach ($product->product->variants as $variant) {
             if ($variant->totalQuantity() < 1 && $variant->allow_preorder) {
                 $config[$variant->product_id] = [
                     'preorder_qty' => $variant->preorder_qty,
