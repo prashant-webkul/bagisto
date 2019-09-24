@@ -1,4 +1,4 @@
-@if ($product->type != 'configurable' && $product->totalQuantity() < 1 && $product->allow_preorder)
+@if ($product->type != 'configurable' && $product->totalQuantity() < 1 && $product->product->allow_preorder)
     <div class="preorder-info">
 
         @if (core()->getConfigData('preorder.settings.general.preorder_type') == 'partial')
