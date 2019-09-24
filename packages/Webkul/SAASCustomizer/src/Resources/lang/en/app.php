@@ -63,6 +63,7 @@ return [
     ],
 
     'exceptions' => [
+        'seller' => 'Seller Blocked',
         'domain-not-found' => 'Domain Not Found',
         'company-blocked-by-administrator' => 'This seller is blocked',
         'not-allowed-to-visit-this-section' => 'You are not allowed to use this section',

@@ -13,11 +13,12 @@
 
             <div class="error-box"  style="width: 50%">
                 <div class="error-title" style="font-size: 24px; color: #5E5E5E; display: flex; flex-direction: row; align-items: center;">
-                    <img src="{{ asset('vendor/webkul/saas/assets/images/block.svg') }}" style="margin-right: 15px;" /> Seller Blocked
+                    <img src="{{ asset('vendor/webkul/saas/assets/images/block.svg') }}" style="margin-right: 15px;" /> {{ __('saas::app.exceptions.seller') }}
                 </div>
 
                 <div class="error-messgae" style="font-size: 24px;color: #242424; margin-top: 40px;">
-                    <b>{{ \Company::getCurrent()->name }}</b> {{ __('saas::app.custom-errors.blocked') }}.
+
+                    <b>{{ $_SERVER['HTTP_HOST'] ?? NULL }}</b> {{ __('saas::app.custom-errors.blocked') }}.
                 </div>
 
                 <div class="error-description" style="margin-top: 20px; margin-bottom: 20px; color: #242424">

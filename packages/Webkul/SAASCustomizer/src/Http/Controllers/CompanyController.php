@@ -34,12 +34,19 @@ class CompanyController extends Controller
     public function __construct(CompanyRepository $company, CompanyDetailsRepository $details, Admin $admin, Role $role, DataPurger $dataSeed, StatsPurger $companyStats)
     {
         $this->company = $company;
+
         $this->details = $details;
+
         $this->admin = $admin;
+
         $this->role = $role;
+
         $this->dataSeed = $dataSeed;
+
         $this->companyStats = $companyStats;
+
         $this->_config = request('_config');
+
         $this->middleware('auth:super-admin', ['only' => ['showCompanyStats', 'edit', 'update']]);
 
         if (! Company::isAllowed()) {
@@ -268,7 +275,7 @@ class CompanyController extends Controller
             $result = $company->update($data);
 
             if ($result) {
-                session()->flash('success', trans('saas::app.status.something-wrong'));
+                session()->flash('success', trans('saas::app.status.company-updated'));
             } else {
                 session()->flash('warning', trans('saas::app.status.something-wrong'));
             }

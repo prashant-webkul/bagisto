@@ -41,7 +41,7 @@ class CompaniesDataGrid extends DataGrid
             'index' => 'name',
             'label' => trans('admin::app.datagrid.name'),
             'type' => 'string',
-            'searchable' => false,
+            'searchable' => true,
             'sortable' => true,
             'filterable' => true
         ]);
@@ -50,7 +50,7 @@ class CompaniesDataGrid extends DataGrid
             'index' => 'domain',
             'label' => trans('saas::app.datagrid.domain'),
             'type' => 'string',
-            'searchable' => false,
+            'searchable' => true,
             'sortable' => true,
             'filterable' => true
         ]);
