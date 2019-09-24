@@ -62,9 +62,15 @@ class Cart
         if (! core()->getConfigData('customer.settings.credit_max.status') || ! $this->getCurrentCustomerGuard()->check())
             return;
 
-        $limit = $this->creditMax->findOneWhere([
+        $creditMax = $this->creditMax->findOneWhere([
             'customer_id' => auth()->guard('customer')->user()->id
-        ])->limit;
+        ]);
+
+        if ($creditMax) {
+            $limit = $creditMax->limit;
+        } else {
+            $limit = 0;
+        }
 
         $baseGrandTotal = $this->orderRepository->scopeQuery(function ($query) {
             return $query
@@ -78,7 +84,7 @@ class Cart
                 ->where('orders.status', '<>', 'canceled');
         })->sum('base_grand_total_invoiced');
 
-        if ( ($baseGrandTotal - $baseGrandTotalInvoiced) >= core()->getConfigData('customer.settings.credit_max.amount'))
+        if ( ($baseGrandTotal - $baseGrandTotalInvoiced) >= $limit)
             throw new \Exception(trans('customercreditmax::app.admin.system.limit-exceeded'));
     }
 }
