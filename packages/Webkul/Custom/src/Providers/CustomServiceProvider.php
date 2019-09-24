@@ -49,6 +49,18 @@ class CustomServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../Resources/views/admin-anon.blade.php' => resource_path('views/vendor/admin/layouts/anonymous-master.blade.php'),
         ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/admin-master.blade.php' => resource_path('views/vendor/admin/layouts/master.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/shop-master.blade.php' => resource_path('views/vendor/shop/layouts/master.blade.php'),
+        ]);
+
+        $this->publishes([
+            __DIR__ . '/../Resources/views/super-master.blade.php' => resource_path('views/vendor/saas/companies/layouts/master.blade.php'),
+        ]);
     }
 
     public function register()
