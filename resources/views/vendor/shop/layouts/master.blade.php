@@ -69,17 +69,6 @@
         @include('shop::layouts.footer.footer')
 
         {!! view_render_event('bagisto.shop.layout.footer.after') !!}
-
-        <div class="footer-bottom">
-            <p>
-                @if (core()->getConfigData('general.content.footer.footer_content'))
-                    {{ core()->getConfigData('general.content.footer.footer_content') }}
-                @else
-                    {{ trans('admin::app.footer.copy-right') }}
-                @endif
-            </p>
-        </div>
-
     </div>
 
     <script type="text/javascript">

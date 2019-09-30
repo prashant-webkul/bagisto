@@ -3,7 +3,7 @@
 return [
     [
         'key' => 'stripe',
-        'name' => 'STRIPE',
+        'name' => 'RazzoPay',
         'route' => 'admin.stripe.seller',
         'sort' => 7,
         'icon-class' => 'stripe-icon',

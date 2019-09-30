@@ -8,7 +8,7 @@
     <div class="content">
         <div class="page-header">
             <div class="page-title">
-                <h1>Connect Your Stripe Account</h1>
+                <h1>Connect Your RazzoPay Account</h1>
             </div>
             <div class="page-action">
             </div>

@@ -1,10 +1,8 @@
-<?php
-
-$creditMax = app('Webkul\CustomerCreditMax\Repositories\CustomerCreditMaxRepository');
-
-$creditMax = $creditMax->findWhere(['customer_id' => $customer->id]);
-
-?>
+@php
+    $creditMax = app('Webkul\CustomerCreditMax\Repositories\CustomerCreditMaxRepository')->findOneWhere([
+        'customer_id' => $customer->id
+    ]);
+@endphp
 
 @section('css')
     @parent
@@ -18,18 +16,21 @@ $creditMax = $creditMax->findWhere(['customer_id' => $customer->id]);
 
 <accordian :title="'Credit Max'" :active="true">
     <div slot="body">
+        <div class="title">
+            @if (isset($creditMax))
+                <b>Assigned Credit Limit:</b>
+
+                <div class="mb-10"><span>{{ core()->currency(round($creditMax->limit, 2)) }}</span></div>
+            @else
+                <b>No limit assigned</b>
+            @endif
+        </div>
 
         <button type="button" style="margin-bottom : 20px" class="btn btn-md btn-primary" @click="showModal('showCreditMax')">
             Credit Max
         </button>
     </div>
 </accordian>
-
-@php
-    $creditMax = app('Webkul\CustomerCreditMax\Repositories\CustomerCreditMaxRepository')->findOneWhere([
-        'customer_id' => $customer->id
-    ]);
-@endphp
 
 <modal id="showCreditMax" :is-open="modalIds.showCreditMax">
     <h3 slot="header">Specify / Check limit</h3>

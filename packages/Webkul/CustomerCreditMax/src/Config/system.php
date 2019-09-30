@@ -11,13 +11,7 @@ return [
                 'title' => 'customercreditmax::app.admin.system.use-credit-max',
                 'type' => 'boolean',
                 'channel_based' => true
-            ], [
-                'name' => 'amount',
-                'title' => 'customercreditmax::app.admin.system.max-credit-amount',
-                'type' => 'text',
-                'validation' => 'decimal',
-                'channel_based' => true
             ]
-        ],
+        ]
     ]
 ];

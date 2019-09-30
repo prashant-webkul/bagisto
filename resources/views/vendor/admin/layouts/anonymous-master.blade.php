@@ -67,15 +67,13 @@
 
         {!! view_render_event('bagisto.admin.layout.head') !!}
     </head>
+
     <body @if (core()->getCurrentLocale()->direction == 'rtl') class="rtl" @endif style="scroll-behavior: smooth;">
         <div id="app" class="container">
-
             <flash-wrapper ref='flashes'></flash-wrapper>
 
             <div class="center-box">
-
                 <div class="adjacent-center">
-
                     <div class="brand-logo">
                         @if (core()->getConfigData('general.design.admin_logo.logo_image'))
                             <img src="{{ \Illuminate\Support\Facades\Storage::url(core()->getConfigData('general.design.admin_logo.logo_image')) }}" alt="Bagisto" style="height: 40px; width: 110px;"/>
@@ -89,21 +87,8 @@
                     @yield('content')
 
                     {!! view_render_event('bagisto.admin.layout.content.after') !!}
-
-                    <div class="footer">
-                        <p>
-                            @if (core()->getConfigData('general.content.footer.footer_content'))
-                                {{ core()->getConfigData('general.content.footer.footer_content') }}
-                            @else
-                                {{ trans('admin::app.footer.copy-right') }}
-                            @endif
-                        </p>
-                    </div>
-
                 </div>
-
             </div>
-
         </div>
 
         <script type="text/javascript">
