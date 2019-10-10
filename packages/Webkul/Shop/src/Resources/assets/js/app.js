@@ -4,8 +4,14 @@ window.VeeValidate = require("vee-validate");
 window.axios = require("axios");
 require("./bootstrap");
 require("ez-plus/src/jquery.ez-plus.js");
+locales = require("./lang/locales.js");
 
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {
+    dictionary: {
+        ar: { messages: locales.messages.ar }
+    }
+});
+
 Vue.prototype.$http = axios
 
 window.eventBus = new Vue();
@@ -24,6 +30,8 @@ $(document).ready(function () {
         mounted: function () {
             this.addServerErrors();
             this.addFlashMessages();
+
+            this.$validator.localize(document.documentElement.lang);
         },
 
         methods: {

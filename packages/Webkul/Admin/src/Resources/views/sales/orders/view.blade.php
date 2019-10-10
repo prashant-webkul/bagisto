@@ -1,7 +1,7 @@
 @extends('admin::layouts.master')
 
 @section('page_title')
-    {{ __('admin::app.sales.orders.view-title', ['order_id' => $order->id]) }}
+    {{ __('admin::app.sales.orders.view-title', ['order_id' => $order->increment_id]) }}
 @stop
 
 @section('content-wrapper')
@@ -14,7 +14,7 @@
                 <h1>
                     <i class="icon angle-left-icon back-link" onclick="history.length > 1 ? history.go(-1) : window.location = '{{ url('/admin/dashboard') }}';"></i>
 
-                    {{ __('admin::app.sales.orders.view-title', ['order_id' => $order->id]) }}
+                    {{ __('admin::app.sales.orders.view-title', ['order_id' => $order->increment_id]) }}
                 </h1>
             </div>
 
@@ -28,6 +28,12 @@
                 @if ($order->canInvoice())
                     <a href="{{ route('admin.sales.invoices.create', $order->id) }}" class="btn btn-lg btn-primary">
                         {{ __('admin::app.sales.orders.invoice-btn-title') }}
+                    </a>
+                @endif
+
+                @if ($order->canRefund())
+                    <a href="{{ route('admin.sales.refunds.create', $order->id) }}" class="btn btn-lg btn-primary">
+                        {{ __('admin::app.sales.orders.refund-btn-title') }}
                     </a>
                 @endif
 
@@ -275,6 +281,10 @@
                                                         </span>
 
                                                         <span class="qty-row">
+                                                            {{ $item->qty_refunded ? __('admin::app.sales.orders.item-refunded', ['qty_refunded' => $item->qty_refunded]) : '' }}
+                                                        </span>
+
+                                                        <span class="qty-row">
                                                             {{ $item->qty_canceled ? __('admin::app.sales.orders.item-canceled', ['qty_canceled' => $item->qty_canceled]) : '' }}
                                                         </span>
                                                     </td>
@@ -375,7 +385,7 @@
                                     <tr>
                                         <td>#{{ $invoice->id }}</td>
                                         <td>{{ $invoice->created_at }}</td>
-                                        <td>#{{ $invoice->order->id }}</td>
+                                        <td>#{{ $invoice->order->increment_id }}</td>
                                         <td>{{ $invoice->address->name }}</td>
                                         <td>{{ $invoice->status_label }}</td>
                                         <td>{{ core()->formatBasePrice($invoice->base_grand_total) }}</td>
@@ -419,7 +429,7 @@
                                     <tr>
                                         <td>#{{ $shipment->id }}</td>
                                         <td>{{ $shipment->created_at }}</td>
-                                        <td>#{{ $shipment->order->id }}</td>
+                                        <td>#{{ $shipment->order->increment_id }}</td>
                                         <td>{{ $shipment->order->created_at }}</td>
                                         <td>{{ $shipment->address->name }}</td>
                                         <td>{{ $shipment->total_qty }}</td>
@@ -432,6 +442,50 @@
                                 @endforeach
 
                                 @if (! $order->shipments->count())
+                                    <tr>
+                                        <td class="empty" colspan="7">{{ __('admin::app.common.no-result-found') }}</td>
+                                    <tr>
+                                @endif
+                        </table>
+                    </div>
+
+                </tab>
+
+                <tab name="{{ __('admin::app.sales.orders.refunds') }}">
+
+                    <div class="table" style="padding: 20px 0">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>{{ __('admin::app.sales.refunds.id') }}</th>
+                                    <th>{{ __('admin::app.sales.refunds.date') }}</th>
+                                    <th>{{ __('admin::app.sales.refunds.order-id') }}</th>
+                                    <th>{{ __('admin::app.sales.refunds.customer-name') }}</th>
+                                    <th>{{ __('admin::app.sales.refunds.status') }}</th>
+                                    <th>{{ __('admin::app.sales.refunds.refunded') }}</th>
+                                    <th>{{ __('admin::app.sales.refunds.action') }}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                @foreach ($order->refunds as $refund)
+                                    <tr>
+                                        <td>#{{ $refund->id }}</td>
+                                        <td>{{ $refund->created_at }}</td>
+                                        <td>#{{ $refund->order->increment_id }}</td>
+                                        <td>{{ $refund->order->customer_full_name }}</td>
+                                        <td>{{ __('admin::app.sales.refunds.refunded') }}</td>
+                                        <td>{{ core()->formatBasePrice($refund->base_grand_total) }}</td>
+                                        <td class="action">
+                                            <a href="{{ route('admin.sales.refunds.view', $refund->id) }}">
+                                                <i class="icon eye-icon"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                                @if (! $order->refunds->count())
                                     <tr>
                                         <td class="empty" colspan="7">{{ __('admin::app.common.no-result-found') }}</td>
                                     <tr>
