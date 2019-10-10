@@ -15,12 +15,18 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
-            $viewRenderEventManager->addTemplate('webfont::webfont');
-        });
+        try {
+            \Company::getCurrent();
 
-        Event::listen('bagisto.shop.layout.head', function($viewRenderEventManager) {
-            $viewRenderEventManager->addTemplate('webfont::webfont');
-        });
+            Event::listen('bagisto.admin.layout.head', function($viewRenderEventManager) {
+                $viewRenderEventManager->addTemplate('webfont::webfont');
+            });
+
+            Event::listen('bagisto.shop.layout.head', function($viewRenderEventManager) {
+                $viewRenderEventManager->addTemplate('webfont::webfont');
+            });
+        } catch (\Exception $e) {
+
+        }
     }
 }

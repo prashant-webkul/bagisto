@@ -4,12 +4,13 @@ namespace Webkul\Custom\Providers;
 
 use Webkul\Custom\Providers\EventServiceProvider;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Router;
 
 class CustomServiceProvider extends ServiceProvider
 {
-    public function boot(Router $router)
+    public function boot()
     {
+        $this->loadRoutesFrom(__DIR__ . '/../Http/routes.php');
+
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', 'custom');
 
         $this->loadTranslationsFrom(__DIR__ . '/../Resources/lang', 'custom');
@@ -66,5 +67,14 @@ class CustomServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->register(EventServiceProvider::class);
+
+        $this->registerConfig();
+    }
+
+    protected function registerConfig()
+    {
+        $this->mergeConfigFrom(
+            dirname(__DIR__) . '/Config/purge-pool.php', 'purge-pool'
+        );
     }
 }

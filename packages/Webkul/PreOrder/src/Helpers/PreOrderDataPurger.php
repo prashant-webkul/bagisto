@@ -31,7 +31,7 @@ class PreOrderDataPurger
     /***
      * Creates attributes for one company at a time
      */
-    public function createPreOrderData($id)
+    public function handle($id)
     {
         $allowPreorderAttribute = $this->attribute->create([
             "code" => "allow_preorder",

@@ -184,6 +184,10 @@ class CompanyController extends Controller
             //creates the personal details record for the company
             $this->details->create($data);
 
+            $company->update([
+                'email' => $authEmail
+            ]);
+
             return response()->json([
                 'success' => true, 'redirect' => isset($data['url']) ? $data['url'] : $data['domain']
             ], 200);

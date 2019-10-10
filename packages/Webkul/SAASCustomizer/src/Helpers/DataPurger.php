@@ -568,45 +568,45 @@ class DataPurger
 
         $this->cms->create($aboutus);
 
-        $returnpolicy = [
-                'url_key' => 'return-policy',
-                'html_content' => '<div class="static-container one-column">
-                                <div class="mb-5">Return policy page content</div>
-                                </div>',
-                'page_title' => 'Return Policy',
-                'meta_title' => 'return policy',
-                'meta_description' => '',
-                'meta_keywords' => 'return, policy',
-                'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Return policy page content</div>\r\n</div>",
-                            "meta_title": "return policy",
-                            "page_title": "Return Policy",
-                            "meta_keywords": "return, policy ", "meta_description": ""}',
-                'channel_id' => $channel->id,
-                'locale_id' => $locale->id,
-                'company_id' => $this->company->id
-            ];
+        // $returnpolicy = [
+        //         'url_key' => 'return-policy',
+        //         'html_content' => '<div class="static-container one-column">
+        //                         <div class="mb-5">Return policy page content</div>
+        //                         </div>',
+        //         'page_title' => 'Return Policy',
+        //         'meta_title' => 'return policy',
+        //         'meta_description' => '',
+        //         'meta_keywords' => 'return, policy',
+        //         'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Return policy page content</div>\r\n</div>",
+        //                     "meta_title": "return policy",
+        //                     "page_title": "Return Policy",
+        //                     "meta_keywords": "return, policy ", "meta_description": ""}',
+        //         'channel_id' => $channel->id,
+        //         'locale_id' => $locale->id,
+        //         'company_id' => $this->company->id
+        //     ];
 
-        $this->cms->create($returnpolicy);
+        // $this->cms->create($returnpolicy);
 
-        $refundpolicy = [
-                'url_key' => 'refund-policy',
-                'html_content' => '<div class="static-container one-column">
-                                <div class="mb-5">Refund policy page content</div>
-                                </div>',
-                'page_title' => 'Refund Policy',
-                'meta_title' => 'Refund policy',
-                'meta_description' => '',
-                'meta_keywords' => 'refund, policy',
-                'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Refund policy page content</div>\r\n</div>",
-                            "meta_title": "Refund policy",
-                            "page_title": "Refund Policy",
-                            "meta_keywords": "refund,policy ", "meta_description": ""}',
-                'channel_id' => $channel->id,
-                'locale_id' => $locale->id,
-                'company_id' => $this->company->id
-            ];
+        // $refundpolicy = [
+        //         'url_key' => 'refund-policy',
+        //         'html_content' => '<div class="static-container one-column">
+        //                         <div class="mb-5">Refund policy page content</div>
+        //                         </div>',
+        //         'page_title' => 'Refund Policy',
+        //         'meta_title' => 'Refund policy',
+        //         'meta_description' => '',
+        //         'meta_keywords' => 'refund, policy',
+        //         'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Refund policy page content</div>\r\n</div>",
+        //                     "meta_title": "Refund policy",
+        //                     "page_title": "Refund Policy",
+        //                     "meta_keywords": "refund,policy ", "meta_description": ""}',
+        //         'channel_id' => $channel->id,
+        //         'locale_id' => $locale->id,
+        //         'company_id' => $this->company->id
+        //     ];
 
-        $this->cms->create($refundpolicy);
+        // $this->cms->create($refundpolicy);
 
         $termsconditions = [
                 'url_key' => 'terms-conditions',
@@ -628,39 +628,37 @@ class DataPurger
 
         $this->cms->create($termsconditions);
 
-        $termsofuse = [
-            'url_key' => 'terms-of-use',
-            'html_content' => '<div class="static-container one-column">
-                            <div class="mb-5">Terms of use page content</div>
-                            </div>',
-            'page_title' => 'Terms of use',
-            'meta_title' => 'Terms of use',
-            'meta_description' => '',
-            'meta_keywords' => 'term, use',
-            'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Terms of use page content</div>\r\n</div>",
-                        "meta_title": "Terms of use",
-                        "page_title": "Terms of use",
-                        "meta_keywords": "terms, use ", "meta_description": ""}',
-            'channel_id' => $channel->id,
-            'locale_id' => $locale->id,
-            'company_id' => $this->company->id
-        ];
+        // $termsofuse = [
+        //     'url_key' => 'terms-of-use',
+        //     'html_content' => '<div class="static-container one-column">
+        //                     <div class="mb-5">Terms of use page content</div>
+        //                     </div>',
+        //     'page_title' => 'Terms of use',
+        //     'meta_title' => 'Terms of use',
+        //     'meta_description' => '',
+        //     'meta_keywords' => 'term, use',
+        //     'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Terms of use page content</div>\r\n</div>",
+        //                 "meta_title": "Terms of use",
+        //                 "page_title": "Terms of use",
+        //                 "meta_keywords": "terms, use ", "meta_description": ""}',
+        //     'channel_id' => $channel->id,
+        //     'locale_id' => $locale->id,
+        //     'company_id' => $this->company->id
+        // ];
 
-        $this->cms->create($termsofuse);
+        // $this->cms->create($termsofuse);
 
         $contactus = [
                 'url_key' => 'contact-us',
-                'html_content' => '<div class="static-container one-column">
-                                <div class="mb-5">Contact us page content</div>
-                                </div>',
+                'html_content' => '@include("custom::contact-form")',
                 'page_title' => 'Contact Us',
                 'meta_title' => 'Contact Us',
                 'meta_description' => '',
                 'meta_keywords' => 'contact, us',
-                'content' => '{"html": "<div class=\"static-container one-column\">\r\n<div class=\"mb-5\">Contact us page content</div>\r\n</div>",
-                            "meta_title": "Contact Us",
-                            "page_title": "Contact Us",
-                            "meta_keywords": "contact, us ", "meta_description": ""}',
+                'content' => '{"html": "<div class=\"static-container one-column\">\r\n@include(\'custom::contact-form\')\r\n</div>",
+                        "meta_title": "Contact Us",
+                        "page_title": "Contact Us",
+                        "meta_keywords": "contact, us ", "meta_description": ""}',
                 'channel_id' => $channel->id,
                 'locale_id' => $locale->id,
                 'company_id' => $this->company->id

@@ -21,7 +21,11 @@ class CompanyRegistered
         foreach(config('purge-pool') as $key => $pool) {
             $poolInstance = app($pool);
 
-            $poolInstance->createPreOrderData($company->id);
+            try {
+                $poolInstance->handle($company->id);
+            } catch (\Exception $e) {
+                continue;
+            }
         }
 
         try {
