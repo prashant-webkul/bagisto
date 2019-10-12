@@ -13,9 +13,15 @@
 
     $categoryRepository = app('Webkul\Category\Repositories\CategoryRepository');
 
-    $category = $categoryRepository->findBySlugOrFail($slug);
+    try {
+        $category = $categoryRepository->findBySlugOrFail($slug);
 
-    $products = $productRepository->getAll($category->id);
+        $products = $productRepository->getAll($category->id);
+    } catch (\Exception $e) {
+        $category = collect();
+
+        $products = collect();
+    }
 
     $toolbarHelper =  app('Webkul\Product\Helpers\Toolbar');
 @endphp
