@@ -56,12 +56,12 @@ return [
     'subscription' => [
         'unsubscribe' => 'Unsubcribe',
         'subscribe' => 'Subscribe',
-        'subscribed' => 'You Are Now Subscribed To Subscription Emails',
-        'not-subscribed' => 'You Cannot Be Subscribed To Subscription Emails, Try Again After Some time',
-        'already' => 'You Are Already Subscribed To Our Subscription List',
-        'unsubscribed' => 'You Are Unsubscribed From Bagisto Subscription Mails',
-        'already-unsub' => 'You Are Already Unsubscribed',
-        'not-subscribed' => 'Error! Mail Cannot Be Sent Currently, Please Try Again Later'
+        'subscribed' => 'You are now subscribed to subscription emails.',
+        'not-subscribed' => 'There was some problem while subscribing, please try again in few moments.',
+        'already' => 'You are already subscribed to subscription mails.',
+        'unsubscribed' => 'You have successfully un-subscribed from subscription mails.',
+        'already-unsub' => 'You are already un-subscribed.',
+        'not-subscribed' => 'Error! email cannot be sent, Please try again in few moments.'
     ],
 
     'search' => [
