@@ -10,7 +10,7 @@ use Illuminate\Container\Container as App;
 /**
  * Attribute Reposotory
  *
- * @author    Jitendra Singh <jitendra@webkul.com>
+ * @author  Jitendra Singh <jitendra@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class AttributeRepository extends Repository
@@ -227,7 +227,7 @@ class AttributeRepository extends Repository
                 && (
                     $attribute->type == 'select'
                     || $attribute->type == 'multiselect'
-                    || $attribute->code == 'sku'
+                    || $attribute->code == 'sku' || $attribute->code == 'name'
                 )) {
                 if ($attribute->options()->exists()) {
                     array_push($trimmed, [

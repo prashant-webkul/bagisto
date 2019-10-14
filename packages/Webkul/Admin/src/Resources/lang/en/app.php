@@ -32,6 +32,9 @@ return [
     'status' => 'Status',
     'select-option' => 'Select option',
     'category' => 'Category',
+    'condition' => 'Condition',
+    'select-attribute' => 'Select :attribute',
+    'value' => 'Value',
 
     'common' => [
         'no-result-found' => 'We could not find any records.',

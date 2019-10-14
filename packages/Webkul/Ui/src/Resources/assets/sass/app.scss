@@ -240,6 +240,11 @@ h5 {
         color: #000;
     }
 
+    &.btn-danger {
+        background: $danger-color;
+        color: #000;
+    }
+
     &:disabled,
     &[disabled="disabled"],
     &[disabled="disabled"]:hover,

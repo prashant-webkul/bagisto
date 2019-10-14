@@ -108,7 +108,7 @@ class CatalogRuleController extends Controller
      */
     public function create()
     {
-        return view($this->_config['view'])->with('catalog_rule', [$this->appliedConfig, $this->category->getPartial(), $this->getStatesAndCountries(), $this->attribute->getPartial()]);
+        return view($this->_config['view'])->with('catalog_rule', ['config' => $this->appliedConfig, 'categories' => $this->category->getPartial(), 'countries' => $this->getStatesAndCountries(), 'attributes' => $this->attribute->getPartial()]);
     }
 
     /**

@@ -89,7 +89,7 @@ body {
     }
 }
 
-.navbar-left {    
+.navbar-left {
     position: fixed;
     left: 0;
     top: 60px;
@@ -98,10 +98,10 @@ body {
     border-right: 1px solid rgba(162, 162, 162, 0.2);
     height: auto;
     bottom: 0;
-    z-index: 2;  
+    z-index: 2;
     background-color: $white;
 
-    ul.menubar {        
+    ul.menubar {
         // padding-bottom: 60px;
         li.menu-item {
             padding: 10px 5px;
@@ -255,8 +255,13 @@ body {
 .control-container {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    justify-content: flex-start;
+    align-items: center;
     width: 750px;
+
+    .control-group {
+        margin-bottom: 0px;
+    }
 
     .control {
         background: $white;
@@ -281,6 +286,10 @@ body {
 
     .control-group::last-child {
         margin-right: 0px;
+    }
+
+    .btn {
+        margin-top: 6px;
     }
 }
 
