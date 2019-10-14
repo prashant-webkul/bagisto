@@ -8,12 +8,14 @@ use Illuminate\Pagination\Paginator;
 use Webkul\Shop\Http\Middleware\Locale;
 use Webkul\Shop\Http\Middleware\Theme;
 use Webkul\Shop\Http\Middleware\Currency;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Webkul\Shop\Exceptions\Handler;
 use Webkul\Core\Tree;
 
 /**
  * Shop service provider
  *
- * @author    Jitendra Singh <jitendra@webkul.com>
+ * @author  Jitendra Singh <jitendra@webkul.com>
  * @copyright 2018 Webkul Software Pvt Ltd (http://www.webkul.com)
  */
 class ShopServiceProvider extends ServiceProvider
@@ -43,6 +45,11 @@ class ShopServiceProvider extends ServiceProvider
 
         Paginator::defaultView('shop::partials.pagination');
         Paginator::defaultSimpleView('shop::partials.pagination');
+
+        $this->app->bind(
+            ExceptionHandler::class,
+            Handler::class
+        );
     }
 
     /**
