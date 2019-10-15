@@ -35,6 +35,12 @@ return [
     'condition' => 'Condition',
     'select-attribute' => 'Select :attribute',
     'value' => 'Value',
+    'all' => 'All',
+    'any' => 'Any',
+    'false' => 'False',
+    'true' => 'True',
+    'conditions' => 'conditions',
+    'if' => 'If',
 
     'common' => [
         'no-result-found' => 'We could not find any records.',

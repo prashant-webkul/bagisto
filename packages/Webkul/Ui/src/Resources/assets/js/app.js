@@ -11,6 +11,7 @@ Vue.component("modal", require("./components/modal"));
 Vue.component("image-upload", require("./components/image/image-upload"));
 Vue.component("image-wrapper", require("./components/image/image-wrapper"));
 Vue.component("image-item", require("./components/image/image-item"));
+Vue.component("condition-wrapper", require("./components/promotions/condition-wrapper"));
 Vue.directive("slugify", require("./directives/slugify"));
 Vue.directive("code", require("./directives/code"));
 Vue.directive("alert", require("./directives/alert"));
