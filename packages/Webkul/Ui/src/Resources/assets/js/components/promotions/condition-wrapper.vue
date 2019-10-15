@@ -13,22 +13,52 @@
 
                 <span>conditions&nbsp;</span>
 
-                <select class="control" v-model="sub_selections[i].test" style="width: 70px; padding:0; margin: 0;">
+                <select class="control" v-model="sub_selections[i].test" style="width: 70px; padding: 0; margin: 0;">
                     <option value=1>True</option>
                     <option value=0>False</option>
                 </select>
             </div>
 
-            <div v-if="sub_selections[i].subSelectionInitiated">
-                @include('admin::promotions.catalog-rule.partials.condition-maker')
+            <div v-if="subSelectionInitiated">
+                <div class="control-group" v-if="! sub_selections[i].hide_type_selection">
+                    <select class="control" v-model="sub_selections[i].type_selection" v-on:change="handleTypeSelection(i)">
+                        <option value="combine">Combine Conditions</option>
+                        <optgroup label="Select Option">
+                            <option value="attribute_family">Attribute Family</option>
+                            <option value="category">Category</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <span v-if="sub_selections[i].hide_type_selection"><b>{{ sub_selections[i].type_selection }}</b> is</span>
             </div>
 
             <div v-if="sub_selections[i].categories">
-                @include('admin::promotions.catalog-rule.partials.category')
+                <div class="control-group" v-if="! sub_selections[i].hide_category">
+                    <select class="control" v-model="sub_selections[i].category" v-on:change="handleCategoryChange(i)">
+                        <option v-for="(category, catIndex) in categories" :key="catIndex" v-bind:value="category.id">
+                            {{ category.slug }}
+                        </option>
+                    </select>
+                </div>
+
+                <span v-if="sub_selections[i].hide_category">
+                    <b v-for="category in categories" v-if="category.id == sub_selections[i].category">{{ category.name }}</b>
+                </span>
             </div>
 
             <div v-if="sub_selections[i].attribute_family">
-                @include('admin::promotions.catalog-rule.partials.attribute-family')
+                <div class="control-group" v-if="! sub_selections[i].hide_attribute_family">
+                    <select class="control" v-model="sub_selections[i].family" v-on:change="handleAttributeFamilyChange(i)">
+                        <option v-for="(attributeFamily, famIndex) in attributeFamilies" :key="famIndex" v-bind:value="attributeFamily.id">
+                            {{ attributeFamily.name }}
+                        </option>
+                    </select>
+                </div>
+
+                <span v-if="sub_selections[i].hide_attribute_family">
+                    <b v-for="attributeFamily in attributeFamilies" v-if="attributeFamily.id == sub_selections[i].family">{{ attributeFamily.name }}</b>
+                </span>
             </div>
 
             <button class="btn btn-primary btn-sm mb-10" v-on:click="handleAddCondition(i)" v-if="sub_selections[i].toggleAdd">+</button>
@@ -41,13 +71,13 @@
         name: 'condition-wrapper',
 
         props: {
-            attributeFamilies: {
+            attributeFams: {
                 type: String,
                 required: true,
                 default: () => [],
             },
 
-            categories: {
+            cats: {
                 type: String,
                 required: true,
                 default: () => [],
@@ -57,10 +87,10 @@
         data () {
             return {
                 handleCalled: 0,
+
                 basic: {
                     'condition': 'all',
                     'test': 1,
-                    'subSelectionInitiated': false,
                     'toggleAdd': true,
                     'type_selection': null,
                     'hide_type_selection': false,
@@ -68,6 +98,8 @@
                     'categories': false,
                     'combine': false
                 },
+
+                subSelectionInitiated: false,
 
                 sub_selections: [],
 
@@ -89,58 +121,16 @@
         mounted () {
             this.sub_selections.push(this.basic);
 
-            console.log(this.categories);
+            this.categories = JSON.parse(this.cats);
+
+            this.attributeFamilies = JSON.parse(this.attributeFams);
         },
 
         methods: {
-            categoryLabel (option) {
-                return option.name + ' [ ' + option.slug + ' ]';
-            },
-
-            attributeListLabel(option) {
-                return option.label;
-            },
-
             handleAddCondition (index) {
                 event.preventDefault();
 
-                if (this.handleCalled == 0) {
-                    this.sub_selections[index].subSelectionInitiated = true;
-
-                    this.sub_selections[index].toggleAdd = false;
-                } else {
-                    this.basic = {
-                        'condition': 'all',
-                        'test': 1,
-                        'subSelectionInitiated': false,
-                        'toggleAdd': true,
-                        'type_selection': null,
-                        'hide_type_selection': false,
-                        'attribute_family': false,
-                        'categories': false,
-                        'combine': false
-                    };
-
-                    this.sub_selections.push(this.basic);
-                }
-
-                this.handleCalled++;
-
-                // this.conditionInitiated = true;
-
-                // conditionObject = {
-                //     'attribute': null,
-                //     'condition': null,
-                //     'value': null,
-                //     'conjecture': 'or'
-                // };
-
-                // this.allconditions.push(conditionObject);
-
-                // conditionObject.attribute = null;
-                // conditionObject.condition = null;
-                // conditionObject.value = null;
-                // conditionObject.conjecture = null;
+                this.subSelectionInitiated = true;
             },
 
             handleTypeSelection(index) {

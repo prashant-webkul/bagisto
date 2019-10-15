@@ -43,7 +43,7 @@
                                         $categories = $catalog_rule['categories'];
                                     @endphp
 
-                                    <condition-wrapper attributeFamilies='@json($attributeFamilies)' categories='@json($categories)'></condition-wrapper>
+                                    <condition-wrapper attributeFams='@json($attributeFamilies)' cats='@json($categories)'></condition-wrapper>
                                 </div>
                             </accordian>
                         </div>
