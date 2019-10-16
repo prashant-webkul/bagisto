@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="selection-groups" v-for="(sub_selection, i) in sub_selections" :key="i">
+        <div class="selection-groups" v-for="(sub_selection, i) in sub_selections" :key="i" style="border-left: 1px dotted #c7c7c7;">
             <div class="control-container mb-10">
                 <span>If&nbsp;</span>
 
@@ -19,7 +19,21 @@
                 </select>
             </div>
 
-            <div v-if="subSelectionInitiated">
+            <div class="control-group">
+                <select class="control" v-for="(innerCategories, innerCatIndex) in sub_selections[i].categories" v-model="sub_selections[i].categories[innerCatIndex]">
+                    <option v-for="(category, catIndex) in categories" :key="catIndex" v-bind:value="category.id">
+                        {{ category.slug }}
+                    </option>
+                </select>
+
+                <select class="control" v-for="(innerAttributeFamilies, innerFamIndex) in sub_selections[i].attribute_families" v-model="sub_selections[i].attribute_families[innerFamIndex]">
+                    <option v-for="(attributeFamily, famIndex) in attribute_families" :key="famIndex" v-bind:value="attributeFamily.id">
+                        {{ attributeFamily.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div v-if="require_type_of_selection">
                 <div class="control-group" v-if="! sub_selections[i].hide_type_selection">
                     <select class="control" v-model="sub_selections[i].type_selection" v-on:change="handleTypeSelection(i)">
                         <option value="combine">Combine Conditions</option>
@@ -33,35 +47,10 @@
                 <span v-if="sub_selections[i].hide_type_selection"><b>{{ sub_selections[i].type_selection }}</b> is</span>
             </div>
 
-            <div v-if="sub_selections[i].categories">
-                <div class="control-group" v-if="! sub_selections[i].hide_category">
-                    <select class="control" v-model="sub_selections[i].category" v-on:change="handleCategoryChange(i)">
-                        <option v-for="(category, catIndex) in categories" :key="catIndex" v-bind:value="category.id">
-                            {{ category.slug }}
-                        </option>
-                    </select>
-                </div>
-
-                <span v-if="sub_selections[i].hide_category">
-                    <b v-for="category in categories" v-if="category.id == sub_selections[i].category">{{ category.name }}</b>
-                </span>
+            <div style="margin-left: 20px;">
+                <condition-wrapper :attributeFams='attributeFams' :cats='cats' v-for="(combine, combIndex) in sub_selections[i].combine" :key="combIndex"></condition-wrapper>
             </div>
-
-            <div v-if="sub_selections[i].attribute_family">
-                <div class="control-group" v-if="! sub_selections[i].hide_attribute_family">
-                    <select class="control" v-model="sub_selections[i].family" v-on:change="handleAttributeFamilyChange(i)">
-                        <option v-for="(attributeFamily, famIndex) in attributeFamilies" :key="famIndex" v-bind:value="attributeFamily.id">
-                            {{ attributeFamily.name }}
-                        </option>
-                    </select>
-                </div>
-
-                <span v-if="sub_selections[i].hide_attribute_family">
-                    <b v-for="attributeFamily in attributeFamilies" v-if="attributeFamily.id == sub_selections[i].family">{{ attributeFamily.name }}</b>
-                </span>
-            </div>
-
-            <button class="btn btn-primary btn-sm mb-10" v-on:click="handleAddCondition(i)" v-if="sub_selections[i].toggleAdd">+</button>
+            <button class="btn btn-primary btn-sm mb-10" v-on:click="insertCondition(i)" v-if="toggleAdd">+</button>
         </div>
     </div>
 </template>
@@ -74,13 +63,13 @@
             attributeFams: {
                 type: String,
                 required: true,
-                default: () => [],
+                default: () => []
             },
 
             cats: {
                 type: String,
                 required: true,
-                default: () => [],
+                default: () => []
             }
         },
 
@@ -93,28 +82,18 @@
                     'test': 1,
                     'toggleAdd': true,
                     'type_selection': null,
-                    'hide_type_selection': false,
-                    'attribute_family': false,
-                    'categories': false,
-                    'combine': false
+                    'attribute_families': [],
+                    'categories': [],
+                    'combine': []
                 },
 
-                subSelectionInitiated: false,
-
+                categories: [],
+                attribute_families: [],
+                category: null,
+                attribute_family: null,
                 sub_selections: [],
-
-                all_conditions: null,
-
-                allconditions: [],
-
-                // criteria: 'cart',
-                // attribute: null,
-                // condition: null,
-                // value: null,
-                // conditionInitiated: false,
-                // conditionHandled: false,
-                // attributeHandled: false,
-                // valueHandled: false
+                require_type_of_selection: false,
+                toggleAdd: true
             };
         },
 
@@ -123,67 +102,47 @@
 
             this.categories = JSON.parse(this.cats);
 
-            this.attributeFamilies = JSON.parse(this.attributeFams);
+            this.attribute_families = JSON.parse(this.attributeFams);
         },
 
         methods: {
-            handleAddCondition (index) {
+            insertCondition (index) {
                 event.preventDefault();
 
-                this.subSelectionInitiated = true;
+                this.toggleAdd = false;
+
+                this.require_type_of_selection = true;
             },
 
             handleTypeSelection(index) {
-                this.sub_selections[index].toggleAdd = true;
+                this.toggleAdd = true;
 
-                this.sub_selections[index].hide_type_selection = true;
+                // this.sub_selections[index].hide_type_selection = true;
 
                 if (this.sub_selections[index].type_selection == 'category') {
-                    this.sub_selections[index].categories = true;
+                    this.sub_selections[index].categories.push(this.category);
 
-                    this.sub_selections[index].hide_category = false;
+                    // this.sub_selections[index].hide_category = false;
                 } else if (this.sub_selections[index].type_selection == 'attribute_family') {
-                    this.sub_selections[index].attribute_family = true;
+                    this.sub_selections[index].attribute_families.push(this.attribute_family);
 
-                    this.sub_selections[index].hide_attribute_family = false;
+                    // this.sub_selections[index].hide_attribute_family = false;
+                } else {
+                    this.$self
+                    this.sub_selections[index].combine.push({
+                        'condition': 'all',
+                        'test': 1,
+                        'toggleAdd': true,
+                        'type_selection': null,
+                        'attribute_families': [],
+                        'categories': [],
+                        'combine': []
+                    });
                 }
-                // else {
 
-                // }
-            },
+                this.sub_selections[index].type_selection = null;
 
-            handleAttribute() {
-                this.attributeHandled = true;
-            },
-
-            handleCondition() {
-                this.conditionHandled = true;
-            },
-
-            handleAttributeFamilyChange(index) {
-                this.sub_selections[index].hide_attribute_family = true;
-            },
-
-            handleCategoryChange(index) {
-                this.sub_selections[index].hide_category = true;
-            },
-
-            handleValue() {
-                this.valueHandled = true;
-            },
-
-            nest(index) {
-                event.preventDefault();
-
-                temp = this.allconditions[index];
-
-                obj = [];
-
-                obj.push(temp);
-
-                this.allconditions[index] = obj;
-
-                console.log(index);
+                this.require_type_of_selection = false;
             },
 
             removeConditionObject(index) {
