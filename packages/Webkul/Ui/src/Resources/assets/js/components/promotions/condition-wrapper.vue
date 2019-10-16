@@ -17,25 +17,33 @@
                     <option value=1>True</option>
                     <option value=0>False</option>
                 </select>
+
+                <span class="icon trash-icon" v-if="i != 0"></span>
             </div>
 
-            <div class="control-group">
-                <select class="control" v-for="(innerCategories, innerCatIndex) in sub_selections[i].categories" v-model="sub_selections[i].categories[innerCatIndex]">
+            <div class="control-container mb-10" v-for="(innerCategories, innerCatIndex) in sub_selections[i].categories">
+                <select class="control"  v-model="sub_selections[i].categories[innerCatIndex]" style="width: 120px; padding: 0; margin: 0;">
                     <option v-for="(category, catIndex) in categories" :key="catIndex" v-bind:value="category.id">
                         {{ category.slug }}
                     </option>
                 </select>
 
-                <select class="control" v-for="(innerAttributeFamilies, innerFamIndex) in sub_selections[i].attribute_families" v-model="sub_selections[i].attribute_families[innerFamIndex]">
+                <span class="icon trash-icon" v-on:click="removeCategory(i)"></span>
+            </div>
+
+            <div class="control-container mb-10" v-for="(innerAttributeFamilies, innerFamIndex) in sub_selections[i].attribute_families">
+                <select class="control" v-model="sub_selections[i].attribute_families[innerFamIndex]" style="width: 120px; padding: 0; margin: 0;">
                     <option v-for="(attributeFamily, famIndex) in attribute_families" :key="famIndex" v-bind:value="attributeFamily.id">
                         {{ attributeFamily.name }}
                     </option>
                 </select>
+
+                <span class="icon trash-icon" v-on:click="removeAttributeFamily(i)"></span>
             </div>
 
             <div v-if="require_type_of_selection">
                 <div class="control-group" v-if="! sub_selections[i].hide_type_selection">
-                    <select class="control" v-model="sub_selections[i].type_selection" v-on:change="handleTypeSelection(i)">
+                    <select class="control" v-model="sub_selections[i].type_selection" v-on:change="handleTypeSelection(i)" style="width: 120px; padding: 0; margin: 0;">
                         <option value="combine">Combine Conditions</option>
                         <optgroup label="Select Option">
                             <option value="attribute_family">Attribute Family</option>
@@ -50,7 +58,8 @@
             <div style="margin-left: 20px;">
                 <condition-wrapper :attributeFams='attributeFams' :cats='cats' v-for="(combine, combIndex) in sub_selections[i].combine" :key="combIndex"></condition-wrapper>
             </div>
-            <button class="btn btn-primary btn-sm mb-10" v-on:click="insertCondition(i)" v-if="toggleAdd">+</button>
+
+            <button class="btn btn-primary btn-sm mt-10 mb-10" v-on:click="insertCondition(i)" v-if="toggleAdd">+</button>
         </div>
     </div>
 </template>
@@ -145,10 +154,12 @@
                 this.require_type_of_selection = false;
             },
 
-            removeConditionObject(index) {
-                removedObject = this.allconditions.splice(index, 1);
+            removeCategory(index) {
+                this.sub_selections[index].categories.splice(index, 1);
+            },
 
-                console.log(removedObject);
+            removeAttributeFamily(index) {
+                this.sub_selections[index].attribute_families.splice(index, 1);
             }
         }
     }
