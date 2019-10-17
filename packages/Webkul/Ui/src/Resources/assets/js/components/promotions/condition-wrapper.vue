@@ -4,21 +4,32 @@
             <div class="control-container mb-10">
                 <span>If&nbsp;</span>
 
-                <select class="control" v-model="sub_selections[i].condition" style="width: 70px; padding:0; margin: 0;">
+                <select class="control" v-model="sub_selections[i].condition" style="width: 70px; padding:0; margin: 0;" v-on:change="hideConditionFactor" v-if="! conditionFactorToggle">
                     <option value="all">All</option>
                     <option value="any">Any</option>
                 </select>
 
+                <span v-on:click="hideConditionFactor" v-if="conditionFactorToggle"><b class="uppercase">{{ sub_selections[i].condition }}</b></span>
+
                 &nbsp;
 
-                <span>conditions&nbsp;</span>
+                <span>
+                    conditions
+                    <span v-if="sub_selections[i].condition == 'all'">are&nbsp;</span>
+                    <span v-else>is&nbsp;</span>
+                </span>
 
-                <select class="control" v-model="sub_selections[i].test" style="width: 70px; padding: 0; margin: 0;">
+                <select class="control" v-model="sub_selections[i].test" style="width: 70px; padding: 0; margin: 0;" v-on:change="hideTestFactor" v-if="! testFactorToggle">
                     <option value=1>True</option>
                     <option value=0>False</option>
                 </select>
 
-                <span class="icon trash-icon" v-if="i != 0"></span>
+                <span v-on:click="hideTestFactor" v-if="testFactorToggle">
+                    <b class="uppercase" v-if="sub_selections[i].test">True</b>
+                    <b class="uppercase" v-else>False</b>
+                </span>
+
+                <span class="icon trash-icon"></span>
             </div>
 
             <div class="control-container mb-10" v-for="(innerCategories, innerCatIndex) in sub_selections[i].categories">
@@ -85,6 +96,8 @@
         data () {
             return {
                 handleCalled: 0,
+                conditionFactorToggle: false,
+                testFactorToggle: false,
 
                 basic: {
                     'condition': 'all',
@@ -137,7 +150,6 @@
 
                     // this.sub_selections[index].hide_attribute_family = false;
                 } else {
-                    this.$self
                     this.sub_selections[index].combine.push({
                         'condition': 'all',
                         'test': 1,
@@ -154,6 +166,22 @@
                 this.require_type_of_selection = false;
             },
 
+            hideConditionFactor() {
+                if (this.conditionFactorToggle == false) {
+                    this.conditionFactorToggle = true;
+                } else {
+                    this.conditionFactorToggle = false;
+                }
+            },
+
+            hideTestFactor() {
+                if (this.testFactorToggle == false) {
+                    this.testFactorToggle = true;
+                } else {
+                    this.testFactorToggle = false;
+                }
+            },
+
             removeCategory(index) {
                 this.sub_selections[index].categories.splice(index, 1);
             },
@@ -164,3 +192,10 @@
         }
     }
 </script>
+
+<style>
+    .uppercase {
+        text-transform: uppercase;
+        text-decoration: underline;
+    }
+</style>
