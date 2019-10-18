@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.1 (57501) - http://www.bohemiancoding.com/sketch -->
+    <title>Icon-Add-gray</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icon-Add-gray" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M16,28 C9.372583,28 4,22.627417 4,16 C4,9.372583 9.372583,4 16,4 C22.627417,4 28,9.372583 28,16 C28,22.627417 22.627417,28 16,28 Z" id="Oval-10" fill="#979797" transform="translate(16.000000, 16.000000) rotate(90.000000) translate(-16.000000, -16.000000) "></path>
+        <g id="Group-2" transform="translate(16.000000, 16.000000) rotate(45.000000) translate(-16.000000, -16.000000) translate(12.000000, 12.000000)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+            <path d="M0,7.5 L7.33886719,0" id="Path-13-Copy" transform="translate(3.669434, 3.750000) scale(-1, 1) translate(-3.669434, -3.750000) "></path>
+            <path d="M0,7.5 L7.33886719,0" id="Path-13-Copy-2"></path>
+        </g>
+    </g>
+</svg>

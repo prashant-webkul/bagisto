@@ -45,7 +45,7 @@
 
                                     {{-- <condition-selector attributeFams='@json($attributeFamilies)' cats='@json($categories)'></condition-selector> --}}
 
-                                    <condition-wrapper attributeFams='@json($attributeFamilies)' cats='@json($categories)'></condition-wrapper>
+                                    <test attributeFams='@json($attributeFamilies)' cats='@json($categories)'></test>
                                 </div>
                             </accordian>
                         </div>

@@ -828,6 +828,7 @@ h5 {
 .accordian, accordian {
     display: inline-block;
     width: 100%;
+    border-bottom: 1px solid #c7c7c7;
 
     .accordian-header, div[slot*="header"] {
         width: 100%;
@@ -835,7 +836,6 @@ h5 {
         font-size: 18px;
         color: $font-color;
         border-top: solid 1px $border-color;
-        border-bottom: solid 1px $border-color;
         padding: 20px 15px;
         cursor: pointer;
         margin-top: -1px;

@@ -44,16 +44,32 @@
     background-image: url('../images/Icon-CMS.svg');
 }
 
+.small-add-icon {
+    display: block;
+    background-size: contain;
+    height: 16px;
+    width: 16px;
+    background-image: url("../images/Icon-Add-gray.svg");
+}
+
+.small-remove-icon {
+    display: block;
+    background-size: contain;
+    height: 16px;
+    width: 16px;
+    background-image: url("../images/Icon-remove.svg");
+}
+
 .angle-right-icon {
     background-image: url("../images/Angle-Right.svg");
     width: 17px;
-    height: 17px;
+    height: 20px;
 }
 
 .angle-left-icon {
     background-image: url("../images/Angle-Left.svg");
     width: 17px;
-    height: 17px;
+    height: 20px;
 }
 
 .arrow-down-icon {
