@@ -22,6 +22,7 @@ services:
 before_install:
   - phpenv config-rm xdebug.ini || true
   - mysql -e 'CREATE DATABASE forge;'
+  - cp .env.example .env
 
 install:
   - if [[ $SETUP = 'stable' ]]; then travis_retry composer update; fi
