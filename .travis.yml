@@ -29,4 +29,8 @@ before_install:
 install:
   - if [[ $SETUP = 'stable' ]]; then travis_retry composer update; fi
 
+before_install:
+  - php artisan key:generate
+  - php artisan storage:link
+
 script: vendor/bin/phpunit
