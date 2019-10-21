@@ -22,12 +22,12 @@ services:
 before_install:
   - phpenv config-rm xdebug.ini || true
   - mysql -e 'CREATE DATABASE forge;'
+
+install:
+  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update; fi
   - php artisan key:generate
   - php artisan storage:link
   - php artisan migrate
   - php artisan db:seed
-
-install:
-  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update; fi
 
 script: vendor/bin/phpunit
