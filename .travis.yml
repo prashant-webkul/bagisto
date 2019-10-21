@@ -33,7 +33,6 @@ before_install:
   - mysql -e 'CREATE DATABASE forge;'
 
 install:
-  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
-  - if [[ $SETUP = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
+  - if [[ $SETUP = 'stable' ]]; then travis_retry composer update; fi
 
 script: vendor/bin/phpunit
