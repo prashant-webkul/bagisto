@@ -80,7 +80,7 @@
             </div>
 
             <div style="margin-left: 20px;">
-                <condition-wrapper :attributeFams='attributeFams' :cats='cats' v-for="(combine, combIndex) in sub_selections[i].combine" :key="combIndex"></condition-wrapper>
+                <condition-wrapper :attributeFams='attributeFams' :cats='cats' v-for="(combine, combIndex) in sub_selections[i].combine" @click="childClicked(combIndex)"></condition-wrapper>
             </div>
 
             <span class="row mt-10" v-on:click="insertCondition(i)" v-if="toggleAdd"><span class="small-add-icon"></span>&nbsp;Inline Condition</span>
@@ -132,7 +132,8 @@
                 attribute_families: [],
                 sub_selections: [],
                 require_type_of_selection: false,
-                toggleAdd: true
+                toggleAdd: true,
+                temp: []
             };
         },
 
@@ -173,6 +174,8 @@
                         'hideInput': false
                     });
                 } else {
+
+
                     this.sub_selections[index].combine.push({
                         'condition': 'all',
                         'test': 1,
@@ -221,12 +224,16 @@
                 }
             },
 
-            removeCategory (index) {
+            removeCategory: function (index) {
                 this.sub_selections[index].categories.splice(index, 1);
             },
 
-            removeAttributeFamily(index) {
+            removeAttributeFamily: function (index) {
                 this.sub_selections[index].attribute_families.splice(index, 1);
+            },
+
+            childClicked: function (value) {
+                console.log(value);
             }
         }
     }
