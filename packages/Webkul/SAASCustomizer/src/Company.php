@@ -69,6 +69,12 @@ class Company
     {
         $superAdmin = new SuperAdmin;
 
+        static $company;
+
+        if (isset($company)) {
+            return $company;
+        }
+
         $primaryServerName = config('app.url');
 
         if (isset($_SERVER['SERVER_NAME']))

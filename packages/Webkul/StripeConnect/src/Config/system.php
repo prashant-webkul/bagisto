@@ -29,6 +29,22 @@ return [
                 ],
                 'validation' => 'required'
             ], [
+                'name' => 'active',
+                'title' => 'admin::app.admin.system.status',
+                'type' => 'select',
+                'options' => [
+                    [
+                        'title' => 'Active',
+                        'value' => true
+                    ], [
+                        'title' => 'Inactive',
+                        'value' => false
+                    ]
+                ],
+                'validation' => 'required',
+                'channel_based' => false,
+                'locale_based' => true
+            ], [
                 'name' => 'statementdescriptor',
                 'title' => 'Statement Descriptor',
                 'type' => 'text'
